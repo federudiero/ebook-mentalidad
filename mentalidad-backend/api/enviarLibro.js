@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import path from 'path';
 
 export default async function handler(req, res) {
+  // Configurar CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -25,7 +26,8 @@ export default async function handler(req, res) {
   });
 
   try {
-    const filePath = path.join(process.cwd(), 'public', 'Mentalidad.pdf');
+    // ✅ Usar ruta relativa desde __dirname para que funcione en Vercel
+    const filePath = path.join(__dirname, '..', 'Mentalidad.pdf');
     const pdfBuffer = readFileSync(filePath);
 
     const mailOptions = {
