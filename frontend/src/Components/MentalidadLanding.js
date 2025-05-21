@@ -37,7 +37,8 @@ export default function MentalidadLanding() {
     setLoading(true);
 
     try {
-      await fetch("https://TU_BACKEND.vercel.app/api/enviarLibro", {
+     await fetch("https://mentalidad-backend.vercel.app/api/enviarLibro", {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, email }),

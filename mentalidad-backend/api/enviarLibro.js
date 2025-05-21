@@ -25,6 +25,7 @@ export default async function handler(req, res) {
   });
 
   const pdfPath = path.join(process.cwd(), 'public', 'Mentalidad.pdf');
+
   const pdfContent = fs.readFileSync(pdfPath);
 
   const mailOptions = {
