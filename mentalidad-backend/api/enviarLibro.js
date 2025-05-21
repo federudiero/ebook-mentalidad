@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import { request } from 'undici';
-import { buffer } from 'stream/consumers'; // <- Esta línea es clave
+import { readFileSync } from 'fs';
+import path from 'path';
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,26 +25,19 @@ export default async function handler(req, res) {
   });
 
   try {
-    const pdfUrl = 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf';
-    const { body } = await request(pdfUrl);
-    const pdfBuffer = await buffer(body); // <- Convierte correctamente stream a Buffer
+    const filePath = path.join(process.cwd(), 'public', 'Mentalidad.pdf');
+    const pdfBuffer = readFileSync(filePath);
 
     const mailOptions = {
       from: `"Mentalidad" <${GMAIL_USER}>`,
       to: email,
       subject: '📘 Tu copia del libro Mentalidad',
       text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés tu ebook.\n\n¡Disfrutalo!`,
-      attachments: [
-        {
-          filename: 'Mentalidad.pdf',
-          content: pdfBuffer,
-        },
-      ],
+      attachments: [{ filename: 'Mentalidad.pdf', content: pdfBuffer }],
     };
 
     await transporter.sendMail(mailOptions);
     return res.status(200).json({ message: 'Correo enviado correctamente' });
-
   } catch (err) {
     console.error('Error al enviar correo:', err);
     return res.status(500).json({ message: 'Error al enviar el correo' });
