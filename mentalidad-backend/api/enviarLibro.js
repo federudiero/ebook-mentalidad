@@ -1,5 +1,8 @@
 import nodemailer from 'nodemailer';
-import fetch from 'node-fetch'; // ⚠️ Asegurate de tener node-fetch instalado
+
+export const config = {
+  runtime: 'nodejs', // Asegura que no se use edge runtime
+};
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
