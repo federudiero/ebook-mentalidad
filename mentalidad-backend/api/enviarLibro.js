@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { request } from 'undici'; // ⚠️ Importamos desde undici
+import { request } from 'undici';
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -24,16 +24,10 @@ export default async function handler(req, res) {
   });
 
   try {
-    // ✅ Descargar el PDF desde Cloudinary usando undici
     const pdfUrl = 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf';
-    const { body } = await request(pdfUrl); // body es un ReadableStream
-    const chunks = [];
-
-    for await (const chunk of body) {
-      chunks.push(chunk);
-    }
-
-    const pdfBuffer = Buffer.concat(chunks);
+    const { body } = await request(pdfUrl);
+    const arrayBuffer = await body.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
     const mailOptions = {
       from: `"Mentalidad" <${GMAIL_USER}>`,
@@ -43,7 +37,7 @@ export default async function handler(req, res) {
       attachments: [
         {
           filename: 'Mentalidad.pdf',
-          content: pdfBuffer,
+          content: buffer,
         },
       ],
     };
