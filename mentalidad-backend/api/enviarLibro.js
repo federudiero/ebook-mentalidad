@@ -1,8 +1,7 @@
 import nodemailer from 'nodemailer';
 
-
-
 export default async function handler(req, res) {
+  // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -24,10 +23,10 @@ export default async function handler(req, res) {
     },
   });
 
-  const pdfUrl = 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf';
-
   try {
+    const pdfUrl = 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf';
     const response = await fetch(pdfUrl);
+
     if (!response.ok) throw new Error('No se pudo descargar el PDF');
 
     const arrayBuffer = await response.arrayBuffer();
@@ -48,6 +47,7 @@ export default async function handler(req, res) {
 
     await transporter.sendMail(mailOptions);
     return res.status(200).json({ message: 'Correo enviado correctamente' });
+
   } catch (err) {
     console.error('Error al enviar correo:', err);
     return res.status(500).json({ message: 'Error al enviar el correo' });
