@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const config = {
-  runtime: 'nodejs', // Asegura que no se use edge runtime
-};
+
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
