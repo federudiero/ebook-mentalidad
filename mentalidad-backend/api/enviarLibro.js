@@ -3,6 +3,19 @@ import { readFileSync } from 'fs';
 import path from 'path';
 
 export default async function handler(req, res) {
+  // 🛡️ Paso 2: CORS para permitir llamadas desde el frontend
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+   res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
+
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return res.status(200).end();
+  }
+
+  res.setHeader('Access-Control-Allow-Origin', '*'); // o tu dominio específico
+
+  // 📩 Método y validación
   if (req.method !== 'POST') return res.status(405).json({ message: 'Método no permitido' });
 
   const { nombre, email } = req.body;
@@ -21,7 +34,6 @@ export default async function handler(req, res) {
   });
 
   try {
-    // Ruta absoluta al PDF dentro de la función
     const filePath = path.join(process.cwd(), 'public', 'Mentalidad.pdf');
     const pdfBuffer = readFileSync(filePath);
 
