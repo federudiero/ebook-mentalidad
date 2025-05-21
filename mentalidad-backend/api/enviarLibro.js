@@ -39,18 +39,18 @@ export default async function handler(req, res) {
     const filePath = path.join(process.cwd(), 'public', 'Mentalidad.pdf');
     const pdfBuffer = readFileSync(filePath);
 
-    const mailOptions = {
-      from: `"Mentalidad" <${GMAIL_USER}>`,
-      to: email,
-      subject: '📘 Tu copia del libro Mentalidad',
-      text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés tu ebook.\n\n¡Disfrutalo!`,
-      attachments: [
-        {
-          filename: 'Mentalidad.pdf',
-          content: pdfBuffer,
-        },
-      ],
-    };
+   const mailOptions = {
+  from: `"Mentalidad" <${GMAIL_USER}>`,
+  to: email,
+  subject: '📘 Tu copia del libro Mentalidad',
+  text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés tu ebook.\n\n¡Disfrutalo!`,
+  attachments: [
+    {
+      filename: 'Mentalidad.pdf',
+      content: pdfBuffer,
+    },
+  ],
+};
 
     await transporter.sendMail(mailOptions);
     return res.status(200).json({ message: 'Correo enviado correctamente' });
