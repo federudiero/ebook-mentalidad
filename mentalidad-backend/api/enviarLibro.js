@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { request } from 'undici';
+import { buffer } from 'stream/consumers'; // <- Esta línea es clave
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,8 +27,7 @@ export default async function handler(req, res) {
   try {
     const pdfUrl = 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf';
     const { body } = await request(pdfUrl);
-    const arrayBuffer = await body.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const pdfBuffer = await buffer(body); // <- Convierte correctamente stream a Buffer
 
     const mailOptions = {
       from: `"Mentalidad" <${GMAIL_USER}>`,
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       attachments: [
         {
           filename: 'Mentalidad.pdf',
-          content: buffer,
+          content: pdfBuffer,
         },
       ],
     };
