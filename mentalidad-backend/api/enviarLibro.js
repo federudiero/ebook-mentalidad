@@ -1,9 +1,12 @@
 import nodemailer from 'nodemailer';
 import { readFileSync } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default async function handler(req, res) {
-  // Configurar CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -26,7 +29,6 @@ export default async function handler(req, res) {
   });
 
   try {
-    // ✅ Usar ruta relativa desde __dirname para que funcione en Vercel
     const filePath = path.join(__dirname, '..', 'Mentalidad.pdf');
     const pdfBuffer = readFileSync(filePath);
 
