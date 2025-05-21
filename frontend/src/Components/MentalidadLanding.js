@@ -37,12 +37,11 @@ export default function MentalidadLanding() {
     setLoading(true);
 
     try {
-     await fetch("https://https://ebook-mentalidad.vercel.app/api/enviarLibro", {
-
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, email }),
-      });
+     await fetch("https://ebook-mentalidad.vercel.app/api/enviarLibro", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ nombre, email }),
+});
 
       if (metodo === "paypal") {
         window.open("https://www.paypal.com/paypalme/tulinkdecompra", "_blank");
