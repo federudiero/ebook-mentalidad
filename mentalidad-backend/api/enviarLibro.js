@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import https from 'https';
+import fetch from 'node-fetch'; // ⚠️ Asegurate de tener node-fetch instalado
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,7 +26,11 @@ export default async function handler(req, res) {
   const pdfUrl = 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf';
 
   try {
-    const pdfBuffer = await fetchBufferFromURL(pdfUrl);
+    const response = await fetch(pdfUrl);
+    if (!response.ok) throw new Error('No se pudo descargar el PDF');
+
+    const arrayBuffer = await response.arrayBuffer();
+    const pdfBuffer = Buffer.from(arrayBuffer);
 
     const mailOptions = {
       from: `"Mentalidad" <${GMAIL_USER}>`,
@@ -47,14 +51,4 @@ export default async function handler(req, res) {
     console.error('Error al enviar correo:', err);
     return res.status(500).json({ message: 'Error al enviar el correo' });
   }
-}
-
-function fetchBufferFromURL(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      const data = [];
-      res.on('data', (chunk) => data.push(chunk));
-      res.on('end', () => resolve(Buffer.concat(data)));
-    }).on('error', (err) => reject(err));
-  });
 }
