@@ -6,8 +6,6 @@ import './MentalidadDeluxeLanding.css';
 
 
 
-
-
 export default function MentalidadLanding() {
   const resumenCapitulos = {
     "La Rueda de la Vida": "Una herramienta para evaluar tu vida en 8 áreas fundamentales: salud, desarrollo personal, dinero, amor, familia, propósito, amistad y ocio. Identifica tus desequilibrios y comienza a trabajar en ellos.",
@@ -21,14 +19,6 @@ export default function MentalidadLanding() {
     "Memento Mori": "Recordar que vas a morir te impulsa a vivir con intención. No postergues tu propósito. Viví con fuego y hacé que tu vida valga."
   };
 
-  const handlePayPal = () => {
-    window.open('https://www.paypal.com/paypalme/tulinkdecompra', '_blank');
-  };
-
-  const handleMercadoPago = () => {
-    window.open('https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=tu_id_de_pago', '_blank');
-  };
-
   const [show, setShow] = useState(false);
   const [contenidoModal, setContenidoModal] = useState({ titulo: '', texto: '' });
   const [nombre, setNombre] = useState('');
@@ -38,8 +28,33 @@ export default function MentalidadLanding() {
   const abrirModal = (titulo, texto) => setContenidoModal({ titulo, texto }) || setShow(true);
   const cerrarModal = () => setShow(false);
 
+  const handleCompra = async (metodo) => {
+    if (!nombre || !email) {
+      alert('Por favor completá tu nombre y correo electrónico.');
+      return;
+    }
 
+    setLoading(true);
 
+    try {
+      await fetch("https://TU_BACKEND.vercel.app/api/enviarLibro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, email }),
+      });
+
+      if (metodo === "paypal") {
+        window.open("https://www.paypal.com/paypalme/tulinkdecompra", "_blank");
+      } else {
+        window.open("https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=tu_id_de_pago", "_blank");
+      }
+    } catch (err) {
+      console.error("Error al enviar:", err);
+      alert("Error al enviar el correo. Intentá nuevamente.");
+    }
+
+    setLoading(false);
+  };
   return (
     <>
       <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
@@ -394,6 +409,46 @@ export default function MentalidadLanding() {
           </Row>
         </Container>
       </section>
+
+
+<section id="comprar" className="py-5 bg-warning text-dark">
+  <Container className="my-5 py-5" style={{ maxWidth: '600px' }}>
+    <h2 className="text-center fw-bold mb-4 display-5">¿Estás listo para cambiar tu mentalidad?</h2>
+    <p className="lead text-center mb-4">Este no es solo un libro. Es una nueva forma de vivir. Da el primer paso ahora.</p>
+
+    <Form className="mb-4">
+      <Form.Group className="mb-3">
+        <Form.Label>Tu nombre</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Escribí tu nombre"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          disabled={loading}
+        />
+      </Form.Group>
+      <Form.Group className="mb-4">
+        <Form.Label>Tu correo electrónico</Form.Label>
+        <Form.Control
+          type="email"
+          placeholder="tucorreo@ejemplo.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
+        />
+      </Form.Group>
+    </Form>
+
+    <div className="d-flex justify-content-center gap-3 flex-wrap">
+      <Button variant="dark" size="lg" onClick={() => handleCompra('paypal')} disabled={loading}>
+        {loading ? 'Procesando...' : 'Comprar con PayPal'}
+      </Button>
+      <Button variant="secondary" size="lg" onClick={() => handleCompra('mercadoPago')} disabled={loading}>
+        {loading ? 'Procesando...' : 'Comprar con Mercado Pago'}
+      </Button>
+    </div>
+  </Container>
+</section>
 
 
       <a href="https://wa.me/543518120950" className="position-fixed bottom-0 end-0 m-4" style={{ zIndex: 9999 }} target="_blank" rel="noopener noreferrer">
