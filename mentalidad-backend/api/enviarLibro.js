@@ -1,8 +1,5 @@
 import nodemailer from 'nodemailer';
-import { readFileSync } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import https from 'https';
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -20,14 +17,16 @@ export default async function handler(req, res) {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: { user: GMAIL_USER, pass: GMAIL_PASS },
+    auth: {
+      user: GMAIL_USER,
+      pass: GMAIL_PASS,
+    },
   });
 
+  const pdfUrl = 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf';
+
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    const filePath = path.join(__dirname, '../../Mentalidad.pdf'); // asegúrate que esté ahí
-    const pdfBuffer = readFileSync(filePath);
+    const pdfBuffer = await fetchBufferFromURL(pdfUrl);
 
     const mailOptions = {
       from: `"Mentalidad" <${GMAIL_USER}>`,
@@ -48,4 +47,14 @@ export default async function handler(req, res) {
     console.error('Error al enviar correo:', err);
     return res.status(500).json({ message: 'Error al enviar el correo' });
   }
+}
+
+function fetchBufferFromURL(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      const data = [];
+      res.on('data', (chunk) => data.push(chunk));
+      res.on('end', () => resolve(Buffer.concat(data)));
+    }).on('error', (err) => reject(err));
+  });
 }
