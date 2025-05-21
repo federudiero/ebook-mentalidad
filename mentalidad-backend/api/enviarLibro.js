@@ -1,7 +1,10 @@
 import nodemailer from 'nodemailer';
+import { readFileSync } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -10,7 +13,6 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Método no permitido' });
 
   const { nombre, email } = req.body;
-
   if (!nombre || !email) return res.status(400).json({ message: 'Faltan datos' });
 
   const GMAIL_USER = process.env.GMAIL_USER;
@@ -18,13 +20,15 @@ export default async function handler(req, res) {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: {
-      user: GMAIL_USER,
-      pass: GMAIL_PASS,
-    },
+    auth: { user: GMAIL_USER, pass: GMAIL_PASS },
   });
 
   try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const filePath = path.join(__dirname, '../../Mentalidad.pdf'); // asegúrate que esté ahí
+    const pdfBuffer = readFileSync(filePath);
+
     const mailOptions = {
       from: `"Mentalidad" <${GMAIL_USER}>`,
       to: email,
@@ -33,7 +37,7 @@ export default async function handler(req, res) {
       attachments: [
         {
           filename: 'Mentalidad.pdf',
-          path: 'https://res.cloudinary.com/doxadkm4r/image/upload/v1747868074/ebook/oymdsxtptii1lcxognkz.pdf', // 👈 Cloudinary PDF
+          content: pdfBuffer,
         },
       ],
     };
