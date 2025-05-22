@@ -1,33 +1,22 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const mercadopago = require('mercadopago');
+
+mercadopago.configure({
+  access_token: process.env.MP_ACCESS_TOKEN,
+});
+
 export default async function handler(req, res) {
   // ✅ CORS Headers
   res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // ✅ Preflight Request
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  // ✅ Preflight CORS
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método no permitido' });
-  }
-
-  let mercadopago;
-  try {
-    const m = await import('mercadopago');
-    mercadopago = m.default || m;
-
-    if (!mercadopago.configure) {
-      throw new Error('mercadopago.configure no está definido');
-    }
-
-    mercadopago.configure({
-      access_token: process.env.MP_ACCESS_TOKEN,
-    });
-  } catch (err) {
-    console.error('❌ Error al importar/configurar mercadopago:', err);
-    return res.status(500).json({ error: 'Error al configurar Mercado Pago' });
   }
 
   try {
@@ -58,7 +47,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ init_point: response.body.sandbox_init_point });
 
   } catch (err) {
-    console.error('❌ Error en crear preferencia:', err);
+    console.error('❌ Error al crear preferencia:', err);
     return res.status(500).json({ error: 'No se pudo crear la preferencia' });
   }
 }
