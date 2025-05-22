@@ -13,15 +13,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Método no permitido' });
   }
 
+  let mercadopago;
   try {
-    // ✅ Import dinámico compatible con ESM
-    const mercadopagoModule = await import('mercadopago');
-    const mercadopago = mercadopagoModule.default;
+    const m = await import('mercadopago');
+    mercadopago = m.default || m;
+
+    if (!mercadopago.configure) {
+      throw new Error('mercadopago.configure no está definido');
+    }
 
     mercadopago.configure({
       access_token: process.env.MP_ACCESS_TOKEN,
     });
+  } catch (err) {
+    console.error('❌ Error al importar/configurar mercadopago:', err);
+    return res.status(500).json({ error: 'Error al configurar Mercado Pago' });
+  }
 
+  try {
     const { nombre, email } = req.body;
 
     if (!nombre || !email) {
@@ -49,7 +58,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ init_point: response.body.sandbox_init_point });
 
   } catch (err) {
-    console.error('❌ Error en crear-preferencia:', err);
-    return res.status(500).json({ error: 'Error interno del servidor' });
+    console.error('❌ Error en crear preferencia:', err);
+    return res.status(500).json({ error: 'No se pudo crear la preferencia' });
   }
 }
