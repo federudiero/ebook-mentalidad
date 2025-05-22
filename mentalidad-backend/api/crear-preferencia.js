@@ -3,16 +3,30 @@ import mercadopago from 'mercadopago';
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN,
 });
+
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  // ✅ CORS universal para Vercel y navegadores modernos
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') return res.status(200).end(); // <- Preflight
+  // ✅ Cierre inmediato de preflight OPTIONS
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-  if (req.method !== 'POST') return res.status(405).json({ message: 'Método no permitido' });
+  // ❌ Métodos no permitidos
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Método no permitido' });
+  }
 
+  // ✅ Captura de datos del cliente
   const { nombre, email } = req.body;
+
+  // ⚠️ Validación mínima
+  if (!nombre || !email) {
+    return res.status(400).json({ error: 'Faltan datos: nombre o email' });
+  }
 
   const preference = {
     items: [{
@@ -34,13 +48,9 @@ export default async function handler(req, res) {
   try {
     const response = await mercadopago.preferences.create(preference);
     console.log('✅ Preferencia creada:', response.body);
-    res.status(200).json({ init_point: response.body.sandbox_init_point }); // usar sandbox mientras testeás
+    return res.status(200).json({ init_point: response.body.sandbox_init_point });
   } catch (error) {
-    console.error('Error al crear preferencia:', error);
-    res.status(500).json({ error: 'No se pudo crear la preferencia de pago' });
+    console.error('❌ Error al crear preferencia:', error);
+    return res.status(500).json({ error: 'No se pudo crear la preferencia de pago' });
   }
 }
-
-const response = await mercadopago.preferences.create(preference);
-console.log('✅ Preferencia creada:', response.body);
-res.status(200).json({ init_point: response.body.init_point });
