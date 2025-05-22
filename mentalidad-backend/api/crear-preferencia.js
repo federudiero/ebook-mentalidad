@@ -1,4 +1,4 @@
-import mercadopago from 'mercadopago/dist/mercadopago.cjs';
+import mercadopago from 'mercadopago';
 
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN,
@@ -6,13 +6,8 @@ mercadopago.configure({
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    return res.status(200).end();
+    return res.status(200).end(); // El CORS se maneja en vercel.json
   }
-
-  res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método no permitido' });
