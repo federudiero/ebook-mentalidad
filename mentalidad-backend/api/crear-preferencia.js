@@ -1,18 +1,14 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
 const mercadopago = require('mercadopago');
 
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN,
 });
 
-export default async function handler(req, res) {
-  // ✅ CORS Headers
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // ✅ Preflight CORS
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   if (req.method !== 'POST') {
@@ -50,4 +46,4 @@ export default async function handler(req, res) {
     console.error('❌ Error al crear preferencia:', err);
     return res.status(500).json({ error: 'No se pudo crear la preferencia' });
   }
-}
+};
