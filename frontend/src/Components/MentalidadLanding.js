@@ -28,7 +28,9 @@ export default function MentalidadLanding() {
   const abrirModal = (titulo, texto) => setContenidoModal({ titulo, texto }) || setShow(true);
   const cerrarModal = () => setShow(false);
 
-  const handleCompra = async () => {
+  const handleCompra = async (e) => {
+  e.preventDefault(); // ❗️Evita recarga de la página
+
   if (!nombre || !email) {
     alert('Completá tus datos');
     return;
@@ -37,15 +39,21 @@ export default function MentalidadLanding() {
   setLoading(true);
   try {
     const res = await fetch('https://ebook-mentalidad.vercel.app/api/crear-preferencia', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ nombre, email }),
-});
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email }),
+    });
+
     const data = await res.json();
-    window.location.href = data.init_point;
+
+    if (data.init_point) {
+      window.location.href = data.init_point;
+    } else {
+      alert('No se pudo generar el link de pago.');
+    }
   } catch (err) {
     console.error('Error:', err);
-    alert('Error al iniciar pago.');
+    alert('Error al iniciar el pago.');
   }
   setLoading(false);
 };
@@ -439,9 +447,14 @@ export default function MentalidadLanding() {
       <Button variant="dark" size="lg" onClick={() => handleCompra('paypal')} disabled={loading}>
         {loading ? 'Procesando...' : 'Comprar con PayPal'}
       </Button>
-      <Button variant="secondary" size="lg" onClick={() => handleCompra('mercadoPago')} disabled={loading}>
-        {loading ? 'Procesando...' : 'Comprar con Mercado Pago'}
-      </Button>
+     <Button
+  variant="secondary"
+  size="lg"
+  onClick={(e) => handleCompra(e)}
+  disabled={loading}
+>
+  {loading ? 'Procesando...' : 'Comprar con Mercado Pago'}
+</Button>
     </div>
   </Container>
 </section>
