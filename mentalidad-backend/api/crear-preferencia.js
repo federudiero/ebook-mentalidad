@@ -5,8 +5,14 @@ mercadopago.configure({
 });
 
 export default async function handler(req, res) {
+  // ✅ CORS para todas las solicitudes
+  res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // ✅ Manejo del preflight CORS
   if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // El CORS se maneja en vercel.json
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
