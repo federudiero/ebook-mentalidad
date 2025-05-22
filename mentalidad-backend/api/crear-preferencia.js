@@ -1,13 +1,13 @@
-import mercadopago from 'mercadopago';
+import * as mercadopago from 'mercadopago';
 
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN,
 });
 
 export default async function handler(req, res) {
-  // CORS completo para Vercel
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
+
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(200).end();
