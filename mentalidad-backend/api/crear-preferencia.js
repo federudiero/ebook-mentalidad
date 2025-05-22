@@ -1,4 +1,8 @@
-import mercadopago from 'mercadopago';
+import * as mercadopago from 'mercadopago';
+
+mercadopago.configure({
+  access_token: process.env.MP_ACCESS_TOKEN,
+});
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
@@ -11,8 +15,6 @@ export default async function handler(req, res) {
   try {
     const { nombre, email } = req.body;
     if (!nombre || !email) return res.status(400).json({ error: 'Faltan datos' });
-
-    const mpClient = new mercadopago.MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
     const preference = {
       items: [
@@ -33,8 +35,8 @@ export default async function handler(req, res) {
       metadata: { nombre, email },
     };
 
-    const result = await mpClient.preference.create({ body: preference });
-    return res.status(200).json({ init_point: result.init_point || result.body.sandbox_init_point });
+    const response = await mercadopago.preferences.create(preference);
+    return res.status(200).json({ init_point: response.body.sandbox_init_point });
   } catch (err) {
     console.error('❌ Error al crear preferencia:', err);
     return res.status(500).json({ error: 'No se pudo crear la preferencia' });
