@@ -28,33 +28,29 @@ export default function MentalidadLanding() {
   const abrirModal = (titulo, texto) => setContenidoModal({ titulo, texto }) || setShow(true);
   const cerrarModal = () => setShow(false);
 
-  const handleCompra = async (metodo) => {
-    if (!nombre || !email) {
-      alert('Por favor completá tu nombre y correo electrónico.');
-      return;
-    }
+  const handleCompra = async () => {
+  if (!nombre || !email) {
+    alert('Completá tus datos');
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
+  try {
+    const res = await fetch('/api/crear-preferencia', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email }),
+    });
+    const data = await res.json();
+    window.location.href = data.init_point;
+  } catch (err) {
+    console.error('Error:', err);
+    alert('Error al iniciar pago.');
+  }
+  setLoading(false);
+};
 
-    try {
-     await fetch("https://ebook-mentalidad.vercel.app/api/enviarLibro", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ nombre, email }),
-});
-
-      if (metodo === "paypal") {
-        window.open("https://www.paypal.com/paypalme/tulinkdecompra", "_blank");
-      } else {
-        window.open("https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=tu_id_de_pago", "_blank");
-      }
-    } catch (err) {
-      console.error("Error al enviar:", err);
-      alert("Error al enviar el correo. Intentá nuevamente.");
-    }
-
-    setLoading(false);
-  };
+  
   return (
     <>
       <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
