@@ -1,34 +1,28 @@
-const mercadopago = require('mercadopago');
+import mercadopago from 'mercadopago';
 
-mercadopago.configure({
-  access_token: process.env.MP_ACCESS_TOKEN,
-});
-
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Método no permitido' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ message: 'Método no permitido' });
 
   try {
     const { nombre, email } = req.body;
+    if (!nombre || !email) return res.status(400).json({ error: 'Faltan datos' });
 
-    if (!nombre || !email) {
-      return res.status(400).json({ error: 'Faltan datos' });
-    }
+    const mpClient = new mercadopago.MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
     const preference = {
-      items: [{
-        title: 'Libro Mentalidad',
-        quantity: 1,
-        unit_price: 5.00,
-        currency_id: 'ARS',
-      }],
+      items: [
+        {
+          title: 'Libro Mentalidad',
+          quantity: 1,
+          unit_price: 5.0,
+          currency_id: 'ARS',
+        },
+      ],
       payer: { email },
       notification_url: 'https://ebook-mentalidad.vercel.app/api/webhook',
       back_urls: {
@@ -36,14 +30,13 @@ module.exports = async function handler(req, res) {
         failure: 'https://ebook-mentalidad.vercel.app/error',
       },
       auto_return: 'approved',
-      metadata: { nombre, email }
+      metadata: { nombre, email },
     };
 
-    const response = await mercadopago.preferences.create(preference);
-    return res.status(200).json({ init_point: response.body.sandbox_init_point });
-
+    const result = await mpClient.preference.create({ body: preference });
+    return res.status(200).json({ init_point: result.init_point || result.body.sandbox_init_point });
   } catch (err) {
     console.error('❌ Error al crear preferencia:', err);
     return res.status(500).json({ error: 'No se pudo crear la preferencia' });
   }
-};
+}
