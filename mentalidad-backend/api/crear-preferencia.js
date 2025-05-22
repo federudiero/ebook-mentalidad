@@ -1,22 +1,35 @@
 import mercadopago from 'mercadopago';
 
+
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN,
 });
-
 export default async function handler(req, res) {
-  // ✅ CORS para todas las solicitudes
-  res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  // ✅ Manejo del preflight CORS
+  // ✅ Siempre responder al preflight sin crashear
   if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(200).end();
   }
 
+  // ✅ CORS para otras peticiones
+  res.setHeader('Access-Control-Allow-Origin', 'https://ebook-mentalidad-qaq4.vercel.app');
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método no permitido' });
+  }
+
+  let mercadopago;
+  try {
+    // ✅ Import dinámico para evitar error en entornos sin dependencias cargadas aún
+    mercadopago = (await import('mercadopago')).default;
+    mercadopago.configure({
+      access_token: process.env.MP_ACCESS_TOKEN,
+    });
+  } catch (importError) {
+    console.error('❌ Error al importar MercadoPago:', importError);
+    return res.status(500).json({ error: 'No se pudo cargar Mercado Pago' });
   }
 
   try {
@@ -47,9 +60,8 @@ export default async function handler(req, res) {
     console.log('✅ Preferencia creada:', response.body);
 
     return res.status(200).json({ init_point: response.body.sandbox_init_point });
-
   } catch (err) {
-    console.error('❌ Error creando preferencia:', err);
-    return res.status(500).json({ error: 'Error al crear preferencia de pago' });
+    console.error('❌ Error al crear preferencia:', err);
+    return res.status(500).json({ error: 'No se pudo crear la preferencia' });
   }
 }
