@@ -36,11 +36,11 @@ export default function MentalidadLanding() {
 
   setLoading(true);
   try {
-    const res = await fetch('/api/crear-preferencia', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, email }),
-    });
+    const res = await fetch('https://ebook-mentalidad-backend.vercel.app/api/crear-preferencia', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ nombre, email }),
+});
     const data = await res.json();
     window.location.href = data.init_point;
   } catch (err) {
