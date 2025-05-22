@@ -34,3 +34,6 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'No se pudo crear la preferencia de pago' });
   }
 }
+const response = await mercadopago.preferences.create(preference);
+console.log('✅ Preferencia creada:', response.body);
+res.status(200).json({ init_point: response.body.init_point });
