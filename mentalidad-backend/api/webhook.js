@@ -20,7 +20,13 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    mercadopago.configure({ access_token: process.env.MP_ACCESS_TOKEN });
+    // 🔀 Detecta si es entorno sandbox o producción
+    const isSandbox = body.live_mode === false;
+    const token = isSandbox
+      ? process.env.MP_ACCESS_TOKEN_SANDBOX
+      : process.env.MP_ACCESS_TOKEN_PROD;
+
+    mercadopago.configure({ access_token: token });
 
     const payment = await mercadopago.payment.findById(paymentId);
 
