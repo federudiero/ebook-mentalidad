@@ -161,27 +161,26 @@ export default function MentalidadLanding() {
          
 
 
-      <section className="py-5 text-white bg-dark text-center">
-        <Container>
-          <h2 className="text-center fw-bold mb-4 display-6">La buena noticia es…</h2>
-          <p className="lead text-center mx-auto" style={{ maxWidth: '800px' }}>
-            Que todos podemos adoptar estos patrones de pensamiento, es totalmente alcanzable y aplicable en nuestra vida diaria.
-            <br /><br />
-            A través de este libro, descubrirás que hacer dinero es una habilidad que se puede aprender y perfeccionar, independientemente de tu situación o educación. Muchas personas desconocen que detrás de la riqueza de las personas millonarias se encuentra un patrón de pensamiento y un método que utilizan para enriquecerse.
-            <br /><br />
-            Por lo tanto, si deseas transformar tu vida, es fundamental que aprendas a pensar, actuar y crear riqueza como estas personas, incluso partiendo desde cero.
-          </p>
-          <div className="text-center mt-5">
-          <img
-  src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
-  alt="Inspiración"
-  className="img-fluid rounded-4 shadow-lg"
-  style={{ maxWidth: '500px', width: '100%' }}
-/>
-
-          </div>
-        </Container>
-      </section>
+   <section className="py-5 text-white bg-dark text-center">
+  <Container>
+    <h2 className="text-center fw-bold mb-4 display-6">La buena noticia es…</h2>
+    <p className="lead text-center mx-auto" style={{ maxWidth: '800px' }}>
+      Que tu mentalidad puede transformarse y convertirse en tu mayor herramienta de cambio. No importa en qué punto estés hoy: siempre podés empezar a crear una nueva versión de vos.
+      <br /><br />
+      Este libro no es solo lectura, es un entrenamiento diseñado para ayudarte a reconfigurar cómo pensás, actuás y enfrentás los desafíos. Vas a descubrir que todo cambio externo comienza por un cambio interno.
+      <br /><br />
+      Si aprendés a pensar como alguien que ya logró sus metas, tus acciones y resultados inevitablemente se alinearán con esa nueva identidad. El verdadero crecimiento comienza cuando decidís dejar de ser espectador y empezás a tomar el control de tu vida.
+    </p>
+    <div className="text-center mt-5">
+      <img
+        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
+        alt="Entrenamiento Mentalidad"
+        className="img-fluid rounded-4 shadow-lg"
+        style={{ maxWidth: '500px', width: '100%' }}
+      />
+    </div>
+  </Container>
+</section>
 
 
       <section className="py-5 bg-warning text-dark">

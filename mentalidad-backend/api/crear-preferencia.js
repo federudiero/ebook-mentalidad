@@ -8,10 +8,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ message: 'Método no permitido' });
 
-  const isSandbox = true;
-  const token = isSandbox
-    ? process.env.MP_ACCESS_TOKEN_SANDBOX
-    : process.env.MP_ACCESS_TOKEN;
+  const token = process.env.MP_ACCESS_TOKEN_PROD; // 🟢 Producción
 
   mercadopago.configure({ access_token: token });
 
@@ -37,7 +34,9 @@ export default async function handler(req, res) {
     };
 
     const response = await mercadopago.preferences.create(preference);
-    return res.status(200).json({ init_point: response.body.sandbox_init_point });
+
+    // 🔄 Usar link de PRODUCCIÓN
+    return res.status(200).json({ init_point: response.body.init_point });
   } catch (err) {
     console.error('❌ Error al crear preferencia:', err);
     return res.status(500).json({ error: 'No se pudo crear la preferencia' });
