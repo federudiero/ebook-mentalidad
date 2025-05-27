@@ -359,6 +359,30 @@ export default function MentalidadLanding() {
   </Container>
 </section>
 
+<section id="contacto" className="py-5 bg-light text-dark">
+        <Container>
+          <h2 className="text-center mb-5 fw-bold display-6">¿Tienes preguntas?</h2>
+          <Row className="justify-content-center">
+            <Col md={8}>
+              <Form>
+                <Form.Group className="mb-3" controlId="formNombre">
+                  <Form.Label>Nombre</Form.Label>
+                  <Form.Control type="text" placeholder="Tu nombre" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formEmail">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control type="email" placeholder="tucorreo@ejemplo.com" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formMensaje">
+                  <Form.Label>Mensaje</Form.Label>
+                  <Form.Control as="textarea" rows={3} placeholder="Escribe tu mensaje..." />
+                </Form.Group>
+                <Button variant="dark" type="submit">Enviar mensaje</Button>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </section>
 
 
 
@@ -386,32 +410,7 @@ export default function MentalidadLanding() {
           </Row>
         </Container>
       </section>
-    
 
-<section id="contacto" className="py-5 bg-light text-dark">
-        <Container>
-          <h2 className="text-center mb-5 fw-bold display-6">¿Tienes preguntas?</h2>
-          <Row className="justify-content-center">
-            <Col md={8}>
-              <Form>
-                <Form.Group className="mb-3" controlId="formNombre">
-                  <Form.Label>Nombre</Form.Label>
-                  <Form.Control type="text" placeholder="Tu nombre" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" placeholder="tucorreo@ejemplo.com" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formMensaje">
-                  <Form.Label>Mensaje</Form.Label>
-                  <Form.Control as="textarea" rows={3} placeholder="Escribe tu mensaje..." />
-                </Form.Group>
-                <Button variant="dark" type="submit">Enviar mensaje</Button>
-              </Form>
-            </Col>
-          </Row>
-        </Container>
-      </section>
 
 
 <section id="comprar" className="py-5 bg-warning text-dark">
