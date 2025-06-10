@@ -29,7 +29,7 @@ export default async function handler(req, res) {
   });
 
   try {
-    const filePath = path.join(__dirname, '..', 'Mentalidad.pdf');
+    const filePath = path.join(__dirname, '..', 'Mindset.pdf');
     const pdfBuffer = readFileSync(filePath);
 
     const mailOptions = {
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       to: email,
       subject: '📘 Tu copia del libro Mentalidad',
       text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés tu ebook.\n\n¡Disfrutalo!`,
-      attachments: [{ filename: 'Mentalidad.pdf', content: pdfBuffer }],
+      attachments: [{ filename: 'Mindset.pdf', content: pdfBuffer }],
     };
 
     await transporter.sendMail(mailOptions);
