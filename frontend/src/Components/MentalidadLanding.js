@@ -24,28 +24,36 @@ export default function MentalidadLanding() {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showTipoCompra, setShowTipoCompra] = useState(false);
+const [tipoCompra, setTipoCompra] = useState('');
 
   const abrirModal = (titulo, texto) => setContenidoModal({ titulo, texto }) || setShow(true);
   const cerrarModal = () => setShow(false);
 
-  const handleCompra = async (e) => {
-  e.preventDefault(); // ❗️Evita recarga de la página
+ const handleCompra = (e) => {
+  e.preventDefault();
 
   if (!nombre || !email) {
     alert('Completá tus datos');
     return;
   }
 
+  setShowTipoCompra(true);
+};
+  const confirmarCompra = async () => {
+ 
+
   setLoading(true);
+  setShowTipoCompra(false);
+
   try {
     const res = await fetch('https://ebook-mentalidad.vercel.app/api/crear-preferencia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, email }),
+      body: JSON.stringify({ nombre, email, tipoCompra }),
     });
 
     const data = await res.json();
-
     if (data.init_point) {
       window.location.href = data.init_point;
     } else {
@@ -55,8 +63,10 @@ export default function MentalidadLanding() {
     console.error('Error:', err);
     alert('Error al iniciar el pago.');
   }
+
   setLoading(false);
 };
+
 
   
   return (
@@ -391,7 +401,7 @@ export default function MentalidadLanding() {
         <Container className="bg-light text-dark p-5 rounded-4 shadow-lg" style={{ maxWidth: '1000px' }}>
           <Row className="align-items-center">
             <Col lg={6} className="text-center mb-4 mb-lg-0">
-              <img src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745440177/ebook/ChatGPT_Image_23_abr_2025_17_28_54_scorez.png" alt="Ebooks incluidos" className="img-fluid rounded-3" style={{ maxHeight: '300px' }} />
+              <img src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg" alt="Ebooks incluidos" className="img-fluid rounded-3" style={{ maxHeight: '300px' }} />
             </Col>
             <Col lg={6}>
               <h3 className="fw-bold mb-3">INCLUYE:</h3>
@@ -445,10 +455,10 @@ export default function MentalidadLanding() {
       <Button variant="dark" size="lg" onClick={() => handleCompra('paypal')} disabled={loading}>
         {loading ? 'Procesando...' : 'Comprar con PayPal'}
       </Button>
-     <Button
+   <Button
   variant="secondary"
   size="lg"
-  onClick={(e) => handleCompra(e)}
+  onClick={handleCompra}
   disabled={loading}
 >
   {loading ? 'Procesando...' : 'Comprar con Mercado Pago'}
@@ -470,6 +480,42 @@ export default function MentalidadLanding() {
           <p>{contenidoModal.texto}</p>
         </Modal.Body>
       </Modal>
+
+
+      <Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>📚 ¿Qué opción querés llevarte?</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <p className="lead mb-4 text-center">Elegí cómo querés transformar tu mentalidad hoy:</p>
+    <div className="d-flex flex-column gap-3">
+      <Button
+        variant="outline-dark"
+        size="lg"
+        onClick={() => { setTipoCompra('solo'); confirmarCompra(); }}
+      >
+        Solo el libro Mentalidad – <strong>5 USD</strong>
+      </Button>
+      <Button
+        variant="dark"
+        size="lg"
+        onClick={() => { setTipoCompra('conBonus'); confirmarCompra(); }}
+      >
+        Libro + Bonus (3 PDFs extra) – <strong>8 USD</strong>
+      </Button>
+    </div>
+
+    <div className="mt-4 small text-muted text-center">
+      El pack con bonus incluye:
+      <ul className="text-start">
+        <li>📘 <strong>Metas Efectivas</strong></li>
+        <li>📘 <strong>Mindset</strong></li>
+        <li>📘 <strong>Productividad Extrema</strong></li>
+      </ul>
+    </div>
+  </Modal.Body>
+</Modal>
+
     </>
   );
 }
