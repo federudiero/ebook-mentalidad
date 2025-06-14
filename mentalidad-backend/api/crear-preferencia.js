@@ -1,3 +1,4 @@
+// === api/crear-preferencia.js ===
 import mercadopago from 'mercadopago';
 
 export default async function handler(req, res) {
@@ -11,18 +12,28 @@ export default async function handler(req, res) {
   const { nombre, email, tipoCompra } = req.body;
   if (!nombre || !email || !tipoCompra) return res.status(400).json({ error: 'Faltan datos' });
 
+  const precios = {
+    solo: { title: 'Mindset (solo)', price: 12 },
+    bonus1: { title: 'Bonus #1 - Mindset + Productividad + Metas Efectivas', price: 18 },
+    bonus2: { title: 'Bonus #2 - Mindset + Productividad', price: 15 },
+    bonus3: { title: 'Bonus #3 - Mindset + Metas Efectivas', price: 15 },
+  };
+
+  const item = precios[tipoCompra];
+  if (!item) return res.status(400).json({ error: 'Tipo de compra inválido' });
+
   const token = process.env.MP_ACCESS_TOKEN_PROD;
   mercadopago.configure({ access_token: token });
 
-  const isBonus = tipoCompra === 'conBonus';
-
   const preference = {
-    items: [{
-      title: isBonus ? 'Libro Mentalidad + Bonus' : 'Libro Mentalidad',
-      quantity: 1,
-      unit_price: isBonus ? 8.0 : 5.0,
-      currency_id: 'ARS',
-    }],
+    items: [
+      {
+        title: item.title,
+        quantity: 1,
+        unit_price: item.price,
+        currency_id: 'USD',
+      },
+    ],
     payer: { email },
     notification_url: 'https://ebook-mentalidad.vercel.app/api/webhook',
     back_urls: {

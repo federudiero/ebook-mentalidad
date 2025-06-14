@@ -398,19 +398,19 @@ const [tipoCompra, setTipoCompra] = useState('');
 
 
       <section className="py-5 bg-dark text-white">
-        <Container className="bg-light text-dark p-5 rounded-4 shadow-lg" style={{ maxWidth: '1000px' }}>
+        <Container className="bg-light text-dark p-5 rounded-4 shadow-lg" style={{ maxWidth: '1400px' }}>
           <Row className="align-items-center">
             <Col lg={6} className="text-center mb-4 mb-lg-0">
               <img src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg" alt="Ebooks incluidos" className="img-fluid rounded-3" style={{ maxHeight: '300px' }} />
             </Col>
             <Col lg={6}>
-              <h3 className="fw-bold mb-3">INCLUYE:</h3>
+              <h3 className="fw-bold mb-3">Promociones y Bonus:</h3>
               <ul className="list-unstyled lead">
-                <li><span className="text-success fw-semibold">Bonus #1</span>: Cómo crear un negocio exitoso desde cero <span className="text-muted">(Valorado en 12 USD)</span></li>
-                <li><span className="text-success fw-semibold">Bonus #2</span>: 7 maneras de generar ingresos en internet <span className="text-muted">(Valorado en 15 USD)</span></li>
-                <li><span className="text-success fw-semibold">Bonus #3</span>: 12 hacks letales de persuasión para vender más <span className="text-muted">(Valorado en 11 USD)</span></li>
-                <li><span className="text-success fw-semibold">Bonus #4</span>: Guía completa para invertir como un experto <span className="text-muted">(Valorado en 12 USD)</span></li>
-                <li><span className="text-success fw-semibold">Bonus #5</span>: Estrategias para gestionar tu dinero inteligentemente <span className="text-muted">(Valorado en 10 USD)</span></li>
+              <li><span className="text-success fw-semibold">Principal</span>: Mindset <span className="text-muted">(Valorado en 12 USD)</span></li>
+                <li><span className="text-success fw-semibold">Bonus #1</span>Mindset + Productividad + metas efectivas <span className="text-muted">(Valorado en 18 USD)</span></li>
+                <li><span className="text-success fw-semibold">Bonus #2</span>Mindset + productividad  <span className="text-muted">(Valorado en 15 USD)</span></li>
+                <li><span className="text-success fw-semibold">Bonus #3</span>Mindset + Metas Efectivas  <span className="text-muted">(Valorado en 15 USD)</span></li>
+                
               </ul>
               <div className="text-center mt-4">
                 <Button variant="warning" size="lg" href="#comprar" className="fw-bold text-uppercase">¡Sí, quiero el libro y los bonus!</Button>
@@ -482,39 +482,55 @@ const [tipoCompra, setTipoCompra] = useState('');
       </Modal>
 
 
-      <Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
+     <Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
   <Modal.Header closeButton>
-    <Modal.Title>📚 ¿Qué opción querés llevarte?</Modal.Title>
+    <Modal.Title>📚 Elegí tu opción de compra</Modal.Title>
   </Modal.Header>
   <Modal.Body>
-    <p className="lead mb-4 text-center">Elegí cómo querés transformar tu mentalidad hoy:</p>
+    <p className="lead mb-4 text-center">Seleccioná el paquete que querés llevarte:</p>
     <div className="d-flex flex-column gap-3">
       <Button
         variant="outline-dark"
         size="lg"
         onClick={() => { setTipoCompra('solo'); confirmarCompra(); }}
       >
-        Solo el libro Mentalidad – <strong>5 USD</strong>
+        Solo el libro Mentalidad – <strong>12 USD</strong>
       </Button>
       <Button
         variant="dark"
         size="lg"
-        onClick={() => { setTipoCompra('conBonus'); confirmarCompra(); }}
+        onClick={() => { setTipoCompra('bonus1'); confirmarCompra(); }}
       >
-        Libro + Bonus (3 PDFs extra) – <strong>8 USD</strong>
+        Bonus #1 – Mentalidad + Productividad + Metas Efectivas – <strong>18 USD</strong>
+      </Button>
+      <Button
+        variant="dark"
+        size="lg"
+        onClick={() => { setTipoCompra('bonus2'); confirmarCompra(); }}
+      >
+        Bonus #2 – Mentalidad + Productividad – <strong>15 USD</strong>
+      </Button>
+      <Button
+        variant="dark"
+        size="lg"
+        onClick={() => { setTipoCompra('bonus3'); confirmarCompra(); }}
+      >
+        Bonus #3 – Mentalidad + Metas Efectivas – <strong>15 USD</strong>
       </Button>
     </div>
 
     <div className="mt-4 small text-muted text-center">
-      El pack con bonus incluye:
+      <p className="fw-bold">Contenido de cada opción:</p>
       <ul className="text-start">
-        <li>📘 <strong>Metas Efectivas</strong></li>
-        <li>📘 <strong>Mindset</strong></li>
-        <li>📘 <strong>Productividad Extrema</strong></li>
+        <li><strong>Solo:</strong> Mentalidad.pdf</li>
+        <li><strong>Bonus #1:</strong> Mentalidad + Productividad + Metas Efectivas</li>
+        <li><strong>Bonus #2:</strong> Mentalidad + Productividad</li>
+        <li><strong>Bonus #3:</strong> Mentalidad + Metas Efectivas</li>
       </ul>
     </div>
   </Modal.Body>
 </Modal>
+
 
     </>
   );
