@@ -7,6 +7,8 @@ import withReactContent from 'sweetalert2-react-content';
 
 
 
+
+
 export default function MentalidadLanding() {
   const resumenCapitulos = {
     "La Rueda de la Vida": "Una herramienta para evaluar tu vida en 8 áreas fundamentales: salud, desarrollo personal, dinero, amor, familia, propósito, amistad y ocio. Identifica tus desequilibrios y comienza a trabajar en ellos.",
@@ -89,6 +91,8 @@ const MySwal = withReactContent(Swal);
 
   setLoading(false);
 };
+
+
 
   
   return (
@@ -391,34 +395,6 @@ const MySwal = withReactContent(Swal);
   </Container>
 </section>
 
-<section id="contacto" className="py-5 bg-light text-dark">
-        <Container>
-          <h2 className="text-center mb-5 fw-bold display-6">¿Tienes preguntas?</h2>
-          <Row className="justify-content-center">
-            <Col md={8}>
-              <Form>
-                <Form.Group className="mb-3" controlId="formNombre">
-                  <Form.Label>Nombre</Form.Label>
-                  <Form.Control type="text" placeholder="Tu nombre" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" placeholder="tucorreo@ejemplo.com" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formMensaje">
-                  <Form.Label>Mensaje</Form.Label>
-                  <Form.Control as="textarea" rows={3} placeholder="Escribe tu mensaje..." />
-                </Form.Group>
-                <Button variant="dark" type="submit">Enviar mensaje</Button>
-              </Form>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-
-
-
       <section className="py-5 bg-dark text-white">
         <Container className="bg-light text-dark p-5 rounded-4 shadow-lg" style={{ maxWidth: '1400px' }}>
           <Row className="align-items-center">
@@ -502,6 +478,7 @@ const MySwal = withReactContent(Swal);
           </tbody>
         </table>
       </div>
+      <h5 className="text-center mb-4">completa tus datos para elegir tu bonus y emepzar la compra</h5>
     </div>
 
     <Form className="mb-4">
@@ -539,6 +516,7 @@ const MySwal = withReactContent(Swal);
     </div>
   </Container>
 </section>
+
 
 
 
