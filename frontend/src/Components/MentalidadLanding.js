@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Container, Accordion, Row, Col, Button, Card, Navbar, Nav, Form, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './MentalidadDeluxeLanding.css';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 
 
@@ -30,19 +31,33 @@ const [tipoCompra, setTipoCompra] = useState('');
   const abrirModal = (titulo, texto) => setContenidoModal({ titulo, texto }) || setShow(true);
   const cerrarModal = () => setShow(false);
 
+
+  const isEmailValid = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const MySwal = withReactContent(Swal);
+
+
  const handleCompra = (e) => {
   e.preventDefault();
-
   if (!nombre || !email) {
-    alert('Completá tus datos');
+    MySwal.fire({
+      icon: 'warning',
+      title: 'Faltan datos',
+      text: 'Completá tu nombre y tu email antes de continuar.',
+    });
     return;
   }
-
+  if (!isEmailValid(email)) {
+    MySwal.fire({
+      icon: 'error',
+      title: 'Email inválido',
+      text: 'Ingresá un correo electrónico válido.',
+    });
+    return;
+  }
   setShowTipoCompra(true);
 };
-  const confirmarCompra = async () => {
- 
 
+ const confirmarCompra = async () => {
   setLoading(true);
   setShowTipoCompra(false);
 
@@ -57,16 +72,23 @@ const [tipoCompra, setTipoCompra] = useState('');
     if (data.init_point) {
       window.location.href = data.init_point;
     } else {
-      alert('No se pudo generar el link de pago.');
+      await MySwal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo generar el link de pago.',
+      });
     }
   } catch (err) {
     console.error('Error:', err);
-    alert('Error al iniciar el pago.');
+    await MySwal.fire({
+      icon: 'error',
+      title: 'Ocurrió un problema',
+      text: 'Error al iniciar el pago.',
+    });
   }
 
   setLoading(false);
 };
-
 
   
   return (
@@ -412,9 +434,26 @@ const [tipoCompra, setTipoCompra] = useState('');
                 <li><span className="text-success fw-semibold">Bonus #3</span>Mindset + Metas Efectivas  <span className="text-muted">(Valorado en 15 USD)</span></li>
                 
               </ul>
-              <div className="text-center mt-4">
-                <Button variant="warning" size="lg" href="#comprar" className="fw-bold text-uppercase">¡Sí, quiero el libro y los bonus!</Button>
-              </div>
+            <div className="text-center mt-4">
+  <Button
+    variant="warning"
+    size="lg"
+    className="fw-bold text-uppercase"
+    onClick={() => {
+      if (!nombre || !email) {
+        const target = document.getElementById('comprar');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        setShowTipoCompra(true);
+      }
+    }}
+  >
+    ¡Sí, quiero el libro y los bonus!
+  </Button>
+</div>
+
              
             </Col>
           </Row>
@@ -424,9 +463,46 @@ const [tipoCompra, setTipoCompra] = useState('');
 
 
 <section id="comprar" className="py-5 bg-warning text-dark">
-  <Container className="my-5 py-5" style={{ maxWidth: '600px' }}>
+  <Container className="my-5 py-5" style={{ maxWidth: '700px' }}>
     <h2 className="text-center fw-bold mb-4 display-5">¿Estás listo para cambiar tu mentalidad?</h2>
     <p className="lead text-center mb-4">Este no es solo un libro. Es una nueva forma de vivir. Da el primer paso ahora.</p>
+
+    <div className="mb-5">
+      <h5 className="text-center mb-4">Elegí tu pack</h5>
+      <div className="table-responsive">
+        <table className="table table-bordered table-striped text-center align-middle shadow">
+          <thead className="table-dark">
+            <tr>
+              <th>Opción</th>
+              <th>Incluye</th>
+              <th>Precio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Solo</strong></td>
+              <td>Mentalidad.pdf</td>
+              <td>12 USD</td>
+            </tr>
+            <tr>
+              <td><strong>Bonus #1</strong></td>
+              <td>Mentalidad + Productividad + Metas Efectivas</td>
+              <td>18 USD</td>
+            </tr>
+            <tr>
+              <td><strong>Bonus #2</strong></td>
+              <td>Mentalidad + Productividad</td>
+              <td>15 USD</td>
+            </tr>
+            <tr>
+              <td><strong>Bonus #3</strong></td>
+              <td>Mentalidad + Metas Efectivas</td>
+              <td>15 USD</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <Form className="mb-4">
       <Form.Group className="mb-3">
@@ -452,20 +528,18 @@ const [tipoCompra, setTipoCompra] = useState('');
     </Form>
 
     <div className="d-flex justify-content-center gap-3 flex-wrap">
-      <Button variant="dark" size="lg" onClick={() => handleCompra('paypal')} disabled={loading}>
-        {loading ? 'Procesando...' : 'Comprar con PayPal'}
+      <Button
+        variant="dark"
+        size="lg"
+        onClick={handleCompra}
+        disabled={loading}
+      >
+        {loading ? 'Procesando...' : 'Comprar ahora'}
       </Button>
-   <Button
-  variant="secondary"
-  size="lg"
-  onClick={handleCompra}
-  disabled={loading}
->
-  {loading ? 'Procesando...' : 'Comprar con Mercado Pago'}
-</Button>
     </div>
   </Container>
 </section>
+
 
 
       <a href="https://wa.me/543518120950" className="position-fixed bottom-0 end-0 m-4" style={{ zIndex: 9999 }} target="_blank" rel="noopener noreferrer">
