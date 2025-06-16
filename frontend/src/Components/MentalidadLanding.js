@@ -543,37 +543,42 @@ const MySwal = withReactContent(Swal);
       </Modal>
 
 
-    <Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
-  <Modal.Header closeButton>
-    <Modal.Title>Elegí tu opción de compra</Modal.Title>
+   <Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
+  <Modal.Header closeButton className="bg-dark text-white">
+    <Modal.Title>🛒 Elegí tu opción de compra</Modal.Title>
   </Modal.Header>
-  <Modal.Body>
-    <Form>
+  <Modal.Body className="bg-light">
+    <Row className="g-3">
       {[
-        { value: 'solo', label: 'Solo el libro (USD 12)' },
-        { value: 'bonus1', label: 'Bonus #1 – Mindset + Productividad + Metas Efectivas (USD 18)' },
-        { value: 'bonus2', label: 'Bonus #2 – Mindset + Productividad (USD 15)' },
-        { value: 'bonus3', label: 'Bonus #3 – Mindset + Metas Efectivas (USD 15)' }
-      ].map(({ value, label }) => (
-        <Form.Check
-          key={value}
-          type="radio"
-          name="tipoCompra"
-          id={`tipoCompra-${value}`}
-          label={label}
-          checked={tipoCompra === value}
-          onChange={() => setTipoCompra(value)}
-          className="mb-3"
-        />
+        { value: 'solo', label: '📘 Solo el libro', precio: 'USD 12' },
+        { value: 'bonus1', label: '📚 Bonus #1', desc: 'Mindset + Productividad + Metas', precio: 'USD 18' },
+        { value: 'bonus2', label: '🚀 Bonus #2', desc: 'Mindset + Productividad', precio: 'USD 15' },
+        { value: 'bonus3', label: '🎯 Bonus #3', desc: 'Mindset + Metas Efectivas', precio: 'USD 15' }
+      ].map(({ value, label, desc, precio }) => (
+        <Col xs={12} key={value}>
+          <div
+            onClick={() => setTipoCompra(value)}
+            className={`border rounded-4 p-3 shadow-sm d-flex align-items-center justify-content-between cursor-pointer ${
+              tipoCompra === value ? 'border-success bg-success bg-opacity-25' : 'bg-white'
+            }`}
+            style={{ transition: 'all 0.3s', cursor: 'pointer' }}
+          >
+            <div>
+              <div className="fw-bold">{label}</div>
+              {desc && <div className="small text-muted">{desc}</div>}
+            </div>
+            <div className="fw-semibold">{precio}</div>
+          </div>
+        </Col>
       ))}
-    </Form>
+    </Row>
   </Modal.Body>
-  <Modal.Footer>
+  <Modal.Footer className="bg-light">
     <Button variant="secondary" onClick={() => setShowTipoCompra(false)}>
       Cancelar
     </Button>
     <Button
-      variant="primary"
+      variant="success"
       onClick={confirmarCompra}
       disabled={!tipoCompra}
     >
@@ -581,6 +586,7 @@ const MySwal = withReactContent(Swal);
     </Button>
   </Modal.Footer>
 </Modal>
+
 
 
     </>
