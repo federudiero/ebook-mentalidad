@@ -543,53 +543,43 @@ const MySwal = withReactContent(Swal);
       </Modal>
 
 
-     <Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
+    <Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
   <Modal.Header closeButton>
-    <Modal.Title>📚 Elegí tu opción de compra</Modal.Title>
+    <Modal.Title>Elegí tu opción de compra</Modal.Title>
   </Modal.Header>
   <Modal.Body>
-    <p className="lead mb-4 text-center">Seleccioná el paquete que querés llevarte:</p>
-    <div className="d-flex flex-column gap-3">
-      <Button
-        variant="outline-dark"
-        size="lg"
-        onClick={() => { setTipoCompra('solo'); confirmarCompra(); }}
-      >
-        Solo el libro Mentalidad – <strong>12 USD</strong>
-      </Button>
-      <Button
-        variant="dark"
-        size="lg"
-        onClick={() => { setTipoCompra('bonus1'); confirmarCompra(); }}
-      >
-        Bonus #1 – Mentalidad + Productividad + Metas Efectivas – <strong>18 USD</strong>
-      </Button>
-      <Button
-        variant="dark"
-        size="lg"
-        onClick={() => { setTipoCompra('bonus2'); confirmarCompra(); }}
-      >
-        Bonus #2 – Mentalidad + Productividad – <strong>15 USD</strong>
-      </Button>
-      <Button
-        variant="dark"
-        size="lg"
-        onClick={() => { setTipoCompra('bonus3'); confirmarCompra(); }}
-      >
-        Bonus #3 – Mentalidad + Metas Efectivas – <strong>15 USD</strong>
-      </Button>
-    </div>
-
-    <div className="mt-4 small text-muted text-center">
-      <p className="fw-bold">Contenido de cada opción:</p>
-      <ul className="text-start">
-        <li><strong>Solo:</strong> Mentalidad.pdf</li>
-        <li><strong>Bonus #1:</strong> Mentalidad + Productividad + Metas Efectivas</li>
-        <li><strong>Bonus #2:</strong> Mentalidad + Productividad</li>
-        <li><strong>Bonus #3:</strong> Mentalidad + Metas Efectivas</li>
-      </ul>
-    </div>
+    <Form>
+      {[
+        { value: 'solo', label: 'Solo el libro (USD 12)' },
+        { value: 'bonus1', label: 'Bonus #1 – Mindset + Productividad + Metas Efectivas (USD 18)' },
+        { value: 'bonus2', label: 'Bonus #2 – Mindset + Productividad (USD 15)' },
+        { value: 'bonus3', label: 'Bonus #3 – Mindset + Metas Efectivas (USD 15)' }
+      ].map(({ value, label }) => (
+        <Form.Check
+          key={value}
+          type="radio"
+          name="tipoCompra"
+          id={`tipoCompra-${value}`}
+          label={label}
+          checked={tipoCompra === value}
+          onChange={() => setTipoCompra(value)}
+          className="mb-3"
+        />
+      ))}
+    </Form>
   </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowTipoCompra(false)}>
+      Cancelar
+    </Button>
+    <Button
+      variant="primary"
+      onClick={confirmarCompra}
+      disabled={!tipoCompra}
+    >
+      Confirmar compra
+    </Button>
+  </Modal.Footer>
 </Modal>
 
 
