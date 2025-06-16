@@ -331,21 +331,21 @@ const MySwal = withReactContent(Swal);
       <Accordion.Item eventKey="2">
         <Accordion.Header>¿Qué métodos de pago hay disponibles?</Accordion.Header>
         <Accordion.Body>
-          Puedes utilizar tarjetas de crédito, débito, PayPal y otros métodos de pago dependiendo del país.
+          Puedes utilizar tarjetas de crédito, débito en Mercado pago.
         </Accordion.Body>
       </Accordion.Item>
 
       <Accordion.Item eventKey="3">
         <Accordion.Header>¿Cómo es el proceso de compra?</Accordion.Header>
         <Accordion.Body>
-          Hacés clic en el botón de compra, seguís los pasos e ingresás tus datos. Luego recibirás el enlace de descarga en tu correo electrónico.
+         completa tus datos para elegir solo el libro de Mindset o los  bonus haz clic en el boton comprar, te llevara directo a mercado pago.
         </Accordion.Body>
       </Accordion.Item>
 
       <Accordion.Item eventKey="4">
         <Accordion.Header>Si tengo algún inconveniente, ¿dónde puedo escribir?</Accordion.Header>
         <Accordion.Body>
-          Podés escribirnos a contacto@blancaspiedras.com o por WhatsApp y te ayudaremos lo antes posible.
+          Podés escribirnos a Mindset@gmail.com o por WhatsApp y te ayudaremos lo antes posible.
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
