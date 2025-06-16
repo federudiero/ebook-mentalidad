@@ -27,11 +27,11 @@ export default async function handler(req, res) {
   });
 
   const filesByTipo = {
-    solo: ['Mindset.pdf'],
-    bonus1: ['Mindset.pdf', 'Productividad.pdf', 'Metas.pdf'],
-    bonus2: ['Mindset.pdf', 'Productividad.pdf'],
-    bonus3: ['Mindset.pdf', 'Metas.pdf'],
-  };
+  solo: ['Mindset.pdf'],
+  bonus1: ['Mindset.pdf', 'Productividad Extrema.pdf', 'Metas Efectivas.pdf'],
+  bonus2: ['Mindset.pdf', 'Productividad Extrema.pdf'],
+  bonus3: ['Mindset.pdf', 'Metas Efectivas.pdf'],
+};
 
   const archivos = filesByTipo[tipoCompra] || [];
   const attachments = archivos.map(file => ({

@@ -26,12 +26,12 @@ module.exports = async function handler(req, res) {
       const GMAIL_PASS = process.env.GMAIL_PASS;
       const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: GMAIL_USER, pass: GMAIL_PASS } });
 
-      const filesByTipo = {
-        solo: ['Mindset.pdf'],
-        bonus1: ['Mindset.pdf', 'Productividad.pdf', 'Metas.pdf'],
-        bonus2: ['Mindset.pdf', 'Productividad.pdf'],
-        bonus3: ['Mindset.pdf', 'Metas.pdf'],
-      };
+  const filesByTipo = {
+  solo: ['Mindset.pdf'],
+  bonus1: ['Mindset.pdf', 'Productividad Extrema.pdf', 'Metas Efectivas.pdf'],
+  bonus2: ['Mindset.pdf', 'Productividad Extrema.pdf'],
+  bonus3: ['Mindset.pdf', 'Metas Efectivas.pdf'],
+};
 
       const attachments = (filesByTipo[tipoCompra] || []).map(filename => ({
         filename,
