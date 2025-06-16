@@ -114,8 +114,7 @@ const MySwal = withReactContent(Swal);
             <Nav className="ms-auto">
               <Nav.Link href="#beneficios">Beneficios</Nav.Link>
               <Nav.Link href="#capitulos">Capítulos</Nav.Link>
-              <Nav.Link href="#testimonios">Testimonios</Nav.Link>
-              <Nav.Link href="#contacto">Contacto</Nav.Link>
+              <Nav.Link href="#testimonios">Testimonios</Nav.Link>  
               <Nav.Link href="#comprar">Comprar</Nav.Link>
             </Nav>
           </Navbar.Collapse>
