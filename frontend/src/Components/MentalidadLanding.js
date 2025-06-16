@@ -112,7 +112,7 @@ const MySwal = withReactContent(Swal);
       <img
         src="https://res.cloudinary.com/doxadkm4r/image/upload/v1750086883/ebook/ChatGPT_Image_16_jun_2025_12_14_28_rzww4g.png"
         alt="Logo MINDSET"
-        height="50"
+        height="48"
         className="d-inline-block align-middle"
       />
     </Navbar.Brand>
