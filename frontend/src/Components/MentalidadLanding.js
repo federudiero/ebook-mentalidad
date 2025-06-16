@@ -106,20 +106,27 @@ const MySwal = withReactContent(Swal);
   
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
-        <Container>
-          <Navbar.Brand href="#" className="fw-bold text-warning fs-3">MINDSET</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link href="#beneficios">Beneficios</Nav.Link>
-              <Nav.Link href="#capitulos">Capítulos</Nav.Link>
-              <Nav.Link href="#testimonios">Testimonios</Nav.Link>  
-              <Nav.Link href="#comprar">Comprar</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+    <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
+  <Container>
+    <Navbar.Brand href="#">
+      <img
+        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1750086883/ebook/ChatGPT_Image_16_jun_2025_12_14_28_rzww4g.png"
+        alt="Logo MINDSET"
+        height="40"
+        className="d-inline-block align-middle"
+      />
+    </Navbar.Brand>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="ms-auto">
+        <Nav.Link href="#beneficios">Beneficios</Nav.Link>
+        <Nav.Link href="#capitulos">Capítulos</Nav.Link>
+        <Nav.Link href="#testimonios">Testimonios</Nav.Link>  
+        <Nav.Link href="#comprar">Comprar</Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
 
       <div
   className="text-white bg-dark text-center"
