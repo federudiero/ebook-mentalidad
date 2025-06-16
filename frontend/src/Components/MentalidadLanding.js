@@ -60,6 +60,15 @@ const MySwal = withReactContent(Swal);
 };
 
  const confirmarCompra = async () => {
+  if (!tipoCompra) {
+    await MySwal.fire({
+      icon: 'warning',
+      title: 'Elegí una opción de compra',
+      text: 'Seleccioná una opción antes de continuar.',
+    });
+    return;
+  }
+
   setLoading(true);
   setShowTipoCompra(false);
 
