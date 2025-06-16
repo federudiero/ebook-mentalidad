@@ -108,7 +108,7 @@ const MySwal = withReactContent(Swal);
     <>
       <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
         <Container>
-          <Navbar.Brand href="#" className="fw-bold text-warning fs-3">Mentalidad</Navbar.Brand>
+          <Navbar.Brand href="#" className="fw-bold text-warning fs-3">MINDSET</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
