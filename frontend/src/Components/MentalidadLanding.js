@@ -459,7 +459,7 @@ const MySwal = withReactContent(Swal);
     <p className="lead text-center mb-4">Este no es solo un libro. Es una nueva forma de vivir. Da el primer paso ahora.</p>
 
     <div className="mb-5">
-      <h5 className="text-center mb-4">Elegí tu pack</h5>
+      <h5 className="text-center mb-4">visualiza tu pack</h5>
       <div className="table-responsive">
         <table className="table table-bordered table-striped text-center align-middle shadow">
           <thead className="table-dark">
