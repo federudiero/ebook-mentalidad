@@ -6,6 +6,9 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 
+import { motion } from 'framer-motion';
+
+
 
 
 
@@ -161,23 +164,36 @@ const MySwal = withReactContent(Swal);
 </div>
 
 
-      <section id="beneficios" className="py-5 bg-warning text-dark">
-        <Container>
-          <h2 className="text-center mb-5 fw-bold display-6">⚡️ Descubrí el poder de tu mente con el ebook que ya está transformando vidas</h2>
-          <Row>
-            {["Reprograma tu forma de pensar", "Rompe tus creencias limitantes", "Activa tu propósito", "Toma el control de tu vida"].map((b, i) => (
-              <Col md={6} lg={3} key={i} className="mb-4">
-                <Card className="text-center text-white h-100 border-0 bg-dark shadow rounded-4 p-3 card-hover">
-                  <Card.Body>
-                    <Card.Text className="fw-semibold fs-5">{b}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-
+     <section id="beneficios" className="py-5 bg-warning text-dark">
+  <Container>
+    <h2 className="text-center mb-5 fw-bold display-6">
+      ⚡️ Descubrí el poder de tu mente con el ebook que ya está transformando vidas
+    </h2>
+    <Row>
+      {[
+        "Reprograma tu forma de pensar",
+        "Rompe tus creencias limitantes",
+        "Activa tu propósito",
+        "Toma el control de tu vida",
+      ].map((b, i) => (
+        <Col md={6} lg={3} key={i} className="mb-4">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: i * 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Card className="text-center text-white h-100 border-0 bg-dark shadow rounded-4 p-3 card-hover">
+              <Card.Body>
+                <Card.Text className="fw-semibold fs-5">{b}</Card.Text>
+              </Card.Body>
+            </Card>
+          </motion.div>
+        </Col>
+      ))}
+    </Row>
+  </Container>
+</section>
 
 
       <section id="capitulos" className="py-5 bg-light text-dark">
@@ -185,58 +201,101 @@ const MySwal = withReactContent(Swal);
           <h2 className="fw-bold mb-5">🧠 ENTRENAMIENTO DE MENTALIDAD</h2>
           <p className="lead mb-5">Un entrenamiento que cambia tu manera de pensar, actuar y vivir.</p>
          
-          <div className="d-flex flex-wrap justify-content-center align-items-center gap-3" style={{ maxWidth: '800px', margin: '0 auto' }}>
-            {[
-              "La Rueda de la Vida",
-              "La vida es un videojuego (GTA Edition)",
-              "Cómo ser un hombre responsable",
-              "SER – HACER – TENER",
-              "Rompe tu caja de creencias",
-              "Mentalidad de abundancia",
-              "Resultados extraordinarios",
-              "La curva del éxito",
-              "Memento Mori"
-            ].map((titulo, i) => (
-              <Button
-                key={i}
-                variant="warning"
-                className="text-dark fw-semibold rounded-pill px-4 py-2 shadow"
-                onClick={() => abrirModal(titulo, resumenCapitulos[titulo])}
-              >
-                {titulo}
-              </Button>
-            ))}
-          </div>
+         <motion.div
+  className="d-flex flex-wrap justify-content-center align-items-center gap-3"
+  style={{ maxWidth: '800px', margin: '0 auto' }}
+>
+  {[
+    "La Rueda de la Vida",
+    "La vida es un videojuego (GTA Edition)",
+    "Cómo ser un hombre responsable",
+    "SER – HACER – TENER",
+    "Rompe tu caja de creencias",
+    "Mentalidad de abundancia",
+    "Resultados extraordinarios",
+    "La curva del éxito",
+    "Memento Mori"
+  ].map((titulo, i) => (
+    <motion.div
+      key={i}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: i * 0.1 }}
+      viewport={{ once: true }}
+    >
+      <Button
+        variant="warning"
+        className="text-dark fw-semibold rounded-pill px-4 py-2 shadow"
+        onClick={() => abrirModal(titulo, resumenCapitulos[titulo])}
+      >
+        {titulo}
+      </Button>
+    </motion.div>
+  ))}
+</motion.div>
         </Container>
       </section>
          
 
 
    <section className="py-5 text-white bg-dark text-center">
-  <Container>
-    <h2 className="text-center fw-bold mb-4 display-6">La buena noticia es…</h2>
-    <p className="lead text-center mx-auto" style={{ maxWidth: '800px' }}>
-      Que tu mentalidad puede transformarse y convertirse en tu mayor herramienta de cambio. No importa en qué punto estés hoy: siempre podés empezar a crear una nueva versión de vos.
-      <br /><br />
-      Este libro no es solo lectura, es un entrenamiento diseñado para ayudarte a reconfigurar cómo pensás, actuás y enfrentás los desafíos. Vas a descubrir que todo cambio externo comienza por un cambio interno.
-      <br /><br />
-      Si aprendés a pensar como alguien que ya logró sus metas, tus acciones y resultados inevitablemente se alinearán con esa nueva identidad. El verdadero crecimiento comienza cuando decidís dejar de ser espectador y empezás a tomar el control de tu vida.
-    </p>
-    <div className="text-center mt-5">
-      <img
-        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
-        alt="Entrenamiento Mentalidad"
-        className="img-fluid rounded-4 shadow-lg"
-        style={{ maxWidth: '500px', width: '100%' }}
-      />
-    </div>
-  </Container>
+ <Container>
+  <motion.h2
+    className="text-center fw-bold mb-4 display-6"
+    initial={{ opacity: 0, y: -30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    viewport={{ once: true }}
+  >
+    La buena noticia es…
+  </motion.h2>
+
+  <motion.p
+    className="lead text-center mx-auto"
+    style={{ maxWidth: '800px' }}
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
+    transition={{ duration: 0.9, delay: 0.2 }}
+    viewport={{ once: true }}
+  >
+    Que tu mentalidad puede transformarse y convertirse en tu mayor herramienta de cambio. No importa en qué punto estés hoy: siempre podés empezar a crear una nueva versión de vos.
+    <br /><br />
+    Este libro no es solo lectura, es un entrenamiento diseñado para ayudarte a reconfigurar cómo pensás, actuás y enfrentás los desafíos. Vas a descubrir que todo cambio externo comienza por un cambio interno.
+    <br /><br />
+    Si aprendés a pensar como alguien que ya logró sus metas, tus acciones y resultados inevitablemente se alinearán con esa nueva identidad. El verdadero crecimiento comienza cuando decidís dejar de ser espectador y empezás a tomar el control de tu vida.
+  </motion.p>
+
+  <motion.div
+    className="text-center mt-5"
+    initial={{ opacity: 0, scale: 0.9 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.8, delay: 0.4 }}
+    viewport={{ once: true }}
+  >
+    <img
+      src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
+      alt="Entrenamiento Mentalidad"
+      className="img-fluid rounded-4 shadow-lg"
+      style={{ maxWidth: '500px', width: '100%' }}
+    />
+  </motion.div>
+</Container>
+
 </section>
 
 
-      <section className="py-5 bg-warning text-dark">
+  <section className="py-5 bg-warning text-dark">
   <Container>
-    <h2 className="text-center fw-bold mb-5 display-6">¿Qué vas a aprender en este libro?</h2>
+    <motion.h2
+      className="text-center fw-bold mb-5 display-6"
+      initial={{ opacity: 0, y: -30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+    >
+      ¿Qué vas a aprender en este libro?
+    </motion.h2>
+
     <Row className="g-4">
       {[
         "Cómo salir de patrones mentales negativos y construir una mentalidad poderosa.",
@@ -249,65 +308,166 @@ const MySwal = withReactContent(Swal);
         "La urgencia de vivir con intención (Memento Mori) y dejar de postergar tu propósito."
       ].map((text, idx) => (
         <Col md={6} key={idx}>
-          <div
-            className="p-4 bg-light rounded-4 h-100 d-flex shadow"
-            style={{
-              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
-            }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }}
+            viewport={{ once: true }}
           >
-            <div className="me-3 fs-4 text-success">✓</div>
-            <p className="mb-0" style={{ fontWeight: 500 }}>{text}</p>
-          </div>
+            <div
+              className="p-4 bg-light rounded-4 h-100 d-flex shadow"
+              style={{
+                boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
+              }}
+            >
+              <div className="me-3 fs-4 text-success">✓</div>
+              <p className="mb-0" style={{ fontWeight: 500 }}>{text}</p>
+            </div>
+          </motion.div>
         </Col>
       ))}
     </Row>
-    <h2 className="text-center fw-bold mt-5 mb-4 display-6">🚀 Empezá hoy tu transformación</h2>
-    <p className="lead text-center mt-5 fw-semibold">
-      Este no es solo un libro. Es un cambio de mentalidad que te acompañará toda la vida.
-    </p>
-  </Container>
-  <Button variant="dark" size="lg" href="#comprar">Quiero mi copia</Button>
-</section>
 
+    <motion.h2
+      className="text-center fw-bold mt-5 mb-4 display-6"
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.2 }}
+      viewport={{ once: true }}
+    >
+      🚀 Empezá hoy tu transformación
+    </motion.h2>
+
+    <motion.p
+      className="lead text-center mt-5 fw-semibold"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+      viewport={{ once: true }}
+    >
+      Este no es solo un libro. Es un cambio de mentalidad que te acompañará toda la vida.
+    </motion.p>
+
+    <motion.div
+      className="text-center mt-4"
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+      viewport={{ once: true }}
+    >
+      <Button variant="dark" size="lg" href="#comprar">
+        Quiero mi copia
+      </Button>
+    </motion.div>
+  </Container>
+</section>
 
 <section className="py-5 bg-dark text-white" id="bonos">
   <Container>
-    <h2 className="text-center mb-5 display-5 fw-bold">¿QUÉ OBTIENES AL REALIZAR LA COMPRA?</h2>
+    <motion.h2
+      className="text-center fw-bold mb-5 display-5"
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+    >
+      🎁 ¿QUÉ OBTIENES AL REALIZAR LA COMPRA?
+    </motion.h2>
+
     <Row className="align-items-center">
-      <Col md={6} className="mb-4 mb-md-0">
-        <Card className="bg-warning border-1 text-dark mb-4 shadow">
-          <Card.Body>
-            <h5 className="fw-bold">📘 Libro en PDF</h5>
-            <p>Recibirás en tu correo electrónico el libro "Mentalidad" en formato PDF para que puedas disfrutarlo en cualquier dispositivo.</p>
-          </Card.Body>
-        </Card>
-        <Card className="bg-warning border-1 text-dark mb-4 shadow">
-          <Card.Body>
-            <h5 className="fw-bold">🔄 Acceso a actualizaciones sin costo</h5>
-            <p>Acceso ilimitado a todas las actualizaciones del libro y material complementario sin costo adicional.</p>
-          </Card.Body>
-        </Card>
-        <Card className="bg-warning border-1 text-dark mb-4 shadow">
-          <Card.Body>
-            <h5 className="fw-bold">💬 Canal de soporte</h5>
-            <p>Podés contactarte con nosotros a través de WhatsApp o redes. Estamos disponibles para ayudarte siempre que lo necesites.</p>
-          </Card.Body>
-        </Card>
+      <Col lg={6}>
+        <motion.ul
+          className="timeline list-unstyled"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.25,
+              },
+            },
+          }}
+        >
+          {[
+            {
+              icon: '📘',
+              title: 'Libro en PDF',
+              text: 'Accedé al libro "Mentalidad" en PDF y leelo desde cualquier dispositivo.',
+            },
+            {
+              icon: '🔄',
+              title: 'Actualizaciones gratis',
+              text: 'Vas a recibir todas las versiones futuras y bonus sin costo extra.',
+            },
+            {
+              icon: '💬',
+              title: 'Canal de soporte directo',
+              text: 'Te acompañamos vía WhatsApp o redes para ayudarte cuando lo necesites.',
+            },
+          ].map((item, i) => (
+            <motion.li
+              key={i}
+              className="d-flex align-items-start mb-4"
+              variants={{
+                hidden: { opacity: 0, x: -30 },
+                visible: { opacity: 1, x: 0 },
+              }}
+              transition={{ duration: 0.6 }}
+            >
+              <div
+                className="me-3 fs-3"
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#ffc107',
+                  color: '#000',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 'bold',
+                }}
+              >
+                {item.icon}
+              </div>
+              <div>
+                <h5 className="fw-bold mb-1">{item.title}</h5>
+                <p className="mb-0">{item.text}</p>
+              </div>
+            </motion.li>
+          ))}
+        </motion.ul>
       </Col>
-      <Col md={6} className="text-center">
-        <div className="bg-white rounded-4 shadow-lg p-3">
+
+      <Col lg={6}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
           <img
             src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949036/ebook/ChatGPT_Image_29_abr_2025_14_47_45_qpvbsi.png"
-            alt="Ebooks incluidos"
-            className="img-fluid rounded-3"
-            style={{ maxWidth: '350px', width: '100%' }}
+            alt="Pack Mentalidad"
+            className="img-fluid rounded-4 shadow-lg"
+            style={{ maxWidth: '400px' }}
           />
-        </div>
+          <p className="mt-3 fw-semibold text-white">
+            Todo esto llega directo a tu correo al completar la compra.
+          </p>
+        </motion.div>
       </Col>
     </Row>
+
+    <div className="text-center mt-5">
+      <Button variant="warning" size="lg" className="fw-bold px-5 py-3 rounded-pill text-dark shadow" href="#comprar">
+  Obtener mi pack ahora
+</Button>
+    </div>
   </Container>
 </section>
-
 
 
 <section className="py-5 bg-light text-dark">
@@ -410,91 +570,223 @@ const MySwal = withReactContent(Swal);
   </Container>
 </section>
 
-      <section className="py-5 bg-dark text-white">
-        <Container className="bg-light text-dark p-5 rounded-4 shadow-lg" style={{ maxWidth: '1400px' }}>
-          <Row className="align-items-center">
-            <Col lg={6} className="text-center mb-4 mb-lg-0">
-              <img src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg" alt="Ebooks incluidos" className="img-fluid rounded-3" style={{ maxHeight: '300px' }} />
-            </Col>
-            <Col lg={6}>
-              <h3 className="fw-bold mb-3">Promociones y Bonus:</h3>
-              <ul className="list-unstyled lead">
-              <li><span className="text-success fw-semibold">Principal</span>: Mindset <span className="text-muted">(Valorado en 12 USD)</span></li>
-                <li><span className="text-success fw-semibold">Bonus #1</span>Mindset + Productividad + metas efectivas <span className="text-muted">(Valorado en 18 USD)</span></li>
-                <li><span className="text-success fw-semibold">Bonus #2</span>Mindset + productividad  <span className="text-muted">(Valorado en 15 USD)</span></li>
-                <li><span className="text-success fw-semibold">Bonus #3</span>Mindset + Metas Efectivas  <span className="text-muted">(Valorado en 15 USD)</span></li>
-                
-              </ul>
-            <div className="text-center mt-4">
-  <Button
-    variant="warning"
-    size="lg"
-    className="fw-bold text-uppercase"
-    onClick={() => {
-      if (!nombre || !email) {
-        const target = document.getElementById('comprar');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else {
-        setShowTipoCompra(true);
-      }
-    }}
-  >
-    ¡Sí, quiero el libro y los bonus!
-  </Button>
-</div>
+<section className="py-5 bg-dark text-center text-white">
+  <Container>
+    <h2 className="fw-bold display-5 mb-5">🧠 Entrenamientos que cambian tu mentalidad</h2>
+    <div className="position-relative d-flex justify-content-center align-items-center" style={{ height: '420px' }}>
+      {/* Productividad Extrema - fondo izquierdo */}
+      <img
+        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg"
+        alt="Productividad Extrema"
+        className="book-image position-absolute"
+        style={{
+          width: '200px',
+          left: '10%',
+          top: '50%',
+          transform: 'translateY(-50%) rotate(-6deg)',
+          opacity: 0.7,
+          zIndex: 1
+        }}
+      />
 
-             
-            </Col>
-          </Row>
-        </Container>
-      </section>
+      {/* Metas Efectivas - fondo derecho */}
+      <img
+        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg"
+        alt="Metas Efectivas"
+        className="book-image position-absolute"
+        style={{
+          width: '200px',
+          right: '10%',
+          top: '50%',
+          transform: 'translateY(-50%) rotate(6deg)',
+          opacity: 0.7,
+          zIndex: 1
+        }}
+      />
 
+      {/* Mindset - central */}
+      <img
+        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
+        alt="Mindset"
+        className="book-image shadow-lg"
+        style={{
+          width: '260px',
+          zIndex: 2,
+          transform: 'scale(1.05)'
+        }}
+      />
+    </div>
+
+    <p className="lead mt-5" style={{ maxWidth: '800px', margin: '0 auto' }}>
+      Estos tres ebooks forman un sistema completo para transformar tu enfoque, alcanzar tus metas y desarrollar la mentalidad de las personas que logran lo que se proponen.
+    </p>
+
+    <Button variant="warning" size="lg" className="mt-4 fw-bold rounded-pill px-5" href="#comprar">
+      Quiero acceder al pack completo
+    </Button>
+  </Container>
+</section>
+
+
+
+<section className="py-5 bg-light text-dark">
+  <Container>
+    <h2 className="text-center fw-bold mb-5 display-5">📚 Más entrenamientos que transforman</h2>
+
+    <div
+      className="grid-section"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: '24px',
+      }}
+    >
+      {/* Metas Efectivas */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="position-relative rounded-4 overflow-hidden"
+        style={{
+          backgroundImage: `url('https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '500px',
+        }}
+      >
+        <div className="position-absolute top-0 start-0 w-100 h-100" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}></div>
+        <div className="position-relative h-100 d-flex flex-column justify-content-center align-items-start p-4 text-white">
+          <h3 className="fw-bold mb-3">📘 Metas Efectivas</h3>
+          <p className="lead">Transformá tus sueños en logros reales.</p>
+          <ul className="mb-3">
+            <li>✅ Método SMARTER</li>
+            <li>✅ Compromiso real</li>
+            <li>✅ Foco con propósito</li>
+          </ul>
+          <Button variant="warning" className="fw-bold rounded-pill px-4">Ver opciones</Button>
+        </div>
+      </motion.div>
+
+      {/* Productividad Extrema */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        viewport={{ once: true }}
+        className="position-relative rounded-4 overflow-hidden"
+        style={{
+          backgroundImage: `url('https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '500px',
+        }}
+      >
+        <div className="position-absolute top-0 start-0 w-100 h-100" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}></div>
+        <div className="position-relative h-100 d-flex flex-column justify-content-center align-items-start p-4 text-white">
+          <h3 className="fw-bold mb-3">📘 Productividad Extrema</h3>
+          <p className="lead">Lográ más en menos tiempo con enfoque total.</p>
+          <ul className="mb-3">
+            <li>✅ Eliminar distracciones</li>
+            <li>✅ Diseñar días de alto impacto</li>
+            <li>✅ Energía y enfoque</li>
+          </ul>
+          <Button variant="warning" className="fw-bold rounded-pill px-4">Ver opciones</Button>
+        </div>
+      </motion.div>
+    </div>
+
+    <div className="text-center mt-5">
+      <Button variant="dark" size="lg" className="fw-bold px-5 py-3 rounded-pill" href="#comprar">
+        ¡Quiero estos entrenamientos!
+      </Button>
+    </div>
+  </Container>
+</section>
 
 
 <section id="comprar" className="py-5 bg-warning text-dark">
-  <Container className="my-5 py-5" style={{ maxWidth: '700px' }}>
+  <Container className="my-5 py-5" style={{ maxWidth: '1000px' }}>
     <h2 className="text-center fw-bold mb-4 display-5">¿Estás listo para cambiar tu mentalidad?</h2>
-    <p className="lead text-center mb-4">Este no es solo un libro. Es una nueva forma de vivir. Da el primer paso ahora.</p>
+    <p className="lead text-center mb-5">Este no es solo un libro. Es una nueva forma de vivir. Da el primer paso ahora.</p>
 
-    <div className="mb-5">
-      <h5 className="text-center mb-4">visualiza tu pack</h5>
-      <div className="table-responsive">
-        <table className="table table-bordered table-striped text-center align-middle shadow">
-          <thead className="table-dark">
-            <tr>
-              <th>Opción</th>
-              <th>Incluye</th>
-              <th>Precio</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Solo</strong></td>
-              <td>Mentalidad.pdf</td>
-              <td>12 USD</td>
-            </tr>
-            <tr>
-              <td><strong>Bonus #1</strong></td>
-              <td>Mentalidad + Productividad + Metas Efectivas</td>
-              <td>18 USD</td>
-            </tr>
-            <tr>
-              <td><strong>Bonus #2</strong></td>
-              <td>Mentalidad + Productividad</td>
-              <td>15 USD</td>
-            </tr>
-            <tr>
-              <td><strong>Bonus #3</strong></td>
-              <td>Mentalidad + Metas Efectivas</td>
-              <td>15 USD</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <h5 className="text-center mb-4">completa tus datos para elegir tu bonus y emepzar la compra</h5>
-    </div>
+    {/* PACKS VISUALES */}
+    <Row className="mb-5 g-4">
+      {[
+       
+        {
+          nombre: 'Mentalidad + metas Efectivas + Productividad',
+          precio: '18 USD',
+          incluye: ['Mentalidad', 'Productividad', 'Metas Efectivas'],
+          imagenes: [
+            'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg',
+            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg',
+            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg'
+          ]
+        },
+         {
+          nombre: 'Mentalidad Solo',
+          precio: '12 USD',
+          incluye: ['Mentalidad'],
+          imagenes: ['https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg']
+        },
+        {
+          nombre: 'Productividad',
+          precio: '8 USD',
+          incluye: [ 'Productividad'],
+          imagenes: [
+            
+            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg'
+          ]
+        },
+        {
+          nombre: 'Metas Efectivas',
+          precio: '8 USD',
+          incluye: [ 'Metas Efectivas'],
+          imagenes: [
+            'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg',
+            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg'
+          ]
+        }
+      ].map((pack, idx) => (
+        <Col md={6} key={idx}>
+          <div
+            className="rounded-4 p-4 h-100 text-center border border-dark-subtle"
+            style={{
+              backgroundColor: 'transparent',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer',
+              boxShadow: '0 6px 20px rgba(0,0,0,0.08)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.03)';
+              e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)';
+            }}
+          >
+            <h5 className="fw-bold mb-3">{pack.nombre}</h5>
+            <div className="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+              {pack.imagenes.map((img, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  alt={`Libro ${i}`}
+                  className="rounded-3 shadow-sm"
+                  style={{ width: '100px', height: 'auto', objectFit: 'cover' }}
+                />
+              ))}
+            </div>
+            <p className="mb-2"><strong>Incluye:</strong> {pack.incluye.join(' + ')}</p>
+            <p className="fw-semibold fs-5">{pack.precio}</p>
+          </div>
+        </Col>
+      ))}
+    </Row>
+
+    <h5 className="text-center mb-4">Completá tus datos para elegir tu bonus y comenzar tu compra</h5>
 
     <Form className="mb-4">
       <Form.Group className="mb-3">
@@ -525,14 +817,13 @@ const MySwal = withReactContent(Swal);
         size="lg"
         onClick={handleCompra}
         disabled={loading}
+        className="px-5 py-3 fw-bold rounded-pill"
       >
         {loading ? 'Procesando...' : 'Comprar ahora'}
       </Button>
     </div>
   </Container>
 </section>
-
-
 
 
       <a href="https://wa.me/543518120950" className="position-fixed bottom-0 end-0 m-4" style={{ zIndex: 9999 }} target="_blank" rel="noopener noreferrer">
@@ -557,9 +848,9 @@ const MySwal = withReactContent(Swal);
     <Row className="g-3">
       {[
         { value: 'solo', label: '📘 Solo el libro', precio: 'USD 12' },
-        { value: 'bonus1', label: '📚 Bonus #1', desc: 'Mindset + Productividad + Metas', precio: 'USD 18' },
-        { value: 'bonus2', label: '🚀 Bonus #2', desc: 'Mindset + Productividad', precio: 'USD 15' },
-        { value: 'bonus3', label: '🎯 Bonus #3', desc: 'Mindset + Metas Efectivas', precio: 'USD 15' }
+        { value: 'bonus1', label: '📚 Mindset + Productividad + Metas', desc: 'Mindset + Productividad + Metas', precio: 'USD 18' },
+        { value: 'bonus2', label: '🚀 Productividad', desc: 'Mindset + Productividad', precio: 'USD 8' },
+        { value: 'bonus3', label: '🎯 Metas Efectivas', desc: 'Mindset + Metas Efectivas', precio: 'USD 8' }
       ].map(({ value, label, desc, precio }) => (
         <Col xs={12} key={value}>
           <div
