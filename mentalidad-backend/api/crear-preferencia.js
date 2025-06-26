@@ -10,16 +10,18 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Método no permitido' });
 
   const { nombre, email, tipoCompra } = req.body;
-  if (!nombre || !email || !tipoCompra) return res.status(400).json({ error: 'Faltan datos' });
+  if (!nombre || !email || !tipoCompra) {
+    return res.status(400).json({ error: 'Faltan datos' });
+  }
 
-  const precios = {
-    solo: { title: 'Mindset (solo)', price: 12 },
-    bonus1: { title: 'Bonus #1 - Mindset + Productividad + Metas Efectivas', price: 18 },
-    bonus2: { title: 'Bonus #2 - Mindset + Productividad', price: 15 },
-    bonus3: { title: 'Bonus #3 - Mindset + Metas Efectivas', price: 15 },
+  const preciosARS = {
+    solo: { title: 'Mindset (solo)', price: 11999 },
+    bonus1: { title: 'Bonus #1 - Mindset + Productividad + Metas Efectivas', price: 17999 },
+    bonus2: { title: 'Bonus #2 - Mindset + Productividad', price: 7999 },
+    bonus3: { title: 'Bonus #3 - Mindset + Metas Efectivas', price: 7999 },
   };
 
-  const item = precios[tipoCompra];
+  const item = preciosARS[tipoCompra];
   if (!item) return res.status(400).json({ error: 'Tipo de compra inválido' });
 
   const token = process.env.MP_ACCESS_TOKEN_PROD;
@@ -30,8 +32,8 @@ export default async function handler(req, res) {
       {
         title: item.title,
         quantity: 1,
-        unit_price: item.price,
-        currency_id: 'USD',
+        unit_price: item.price, // en pesos argentinos
+        currency_id: 'ARS',
       },
     ],
     payer: { email },
