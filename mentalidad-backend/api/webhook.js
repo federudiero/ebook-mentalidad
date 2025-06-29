@@ -8,7 +8,6 @@ module.exports = async function handler(req, res) {
 
   const { body } = req;
 
-  // ✅ Validar tipo de evento correctamente
   if (body.type !== 'payment') return res.status(200).end();
 
   const paymentId = body?.data?.id;
@@ -55,7 +54,7 @@ module.exports = async function handler(req, res) {
 
       const attachments = (filesByTipo[tipoCompra] || []).map(filename => ({
         filename,
-        content: fs.readFileSync(path.join(__dirname, '..', filename)),
+        content: fs.readFileSync(path.join(__dirname, filename)), // ✅ corregido
       }));
 
       await transporter.sendMail({
