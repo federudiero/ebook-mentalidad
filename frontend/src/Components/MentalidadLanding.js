@@ -775,7 +775,7 @@ const MySwal = withReactContent(Swal);
               incluye: ['Metas Efectivas'],
               value: 'bonus3',
               imagenes: [
-                'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg',
+                
                 'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg'
               ]
             }
