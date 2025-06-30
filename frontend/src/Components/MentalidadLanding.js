@@ -811,7 +811,7 @@ const MySwal = withReactContent(Swal);
           ))}
         </Row>
 
-        <h5 className="text-center mb-4">Completá tus datos para elegir tu bonus y comenzar tu compra</h5>
+        <h5 className="text-center mb-4">Completá tus datos para comenzar tu compra</h5>
 
         <Form className="mb-4">
           <Form.Group className="mb-3">
