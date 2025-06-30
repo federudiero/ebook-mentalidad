@@ -4,111 +4,96 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end('Method Not Allowed');
 
-  // Recolección del body manual por si no viene parseado
-  let rawData = '';
-  req.on('data', chunk => {
-    rawData += chunk;
-  });
+  let body = req.body;
 
-  req.on('end', async () => {
-    let body;
+  // Backup manual por si req.body viene vacío (caso de Vercel)
+  if (!body || !body.data) {
     try {
-      body = typeof rawData === 'string' ? JSON.parse(rawData) : rawData;
+      const rawBody = await new Promise((resolve, reject) => {
+        let data = '';
+        req.on('data', chunk => (data += chunk));
+        req.on('end', () => resolve(data));
+        req.on('error', err => reject(err));
+      });
+
+      body = JSON.parse(rawBody);
     } catch (err) {
-      console.error('❌ Error al parsear body JSON:', err);
-      return res.status(400).end('Body inválido');
+      console.error('❌ Error al parsear el cuerpo del webhook:', err);
+      return res.status(400).end('Invalid body');
     }
+  }
 
-    const paymentIdRaw = body?.data?.id;
-    const paymentId = parseInt(paymentIdRaw, 10);
+  const paymentIdRaw = body?.data?.id;
+  const paymentId = parseInt(paymentIdRaw, 10);
 
-    if (!paymentId || isNaN(paymentId)) {
-      console.warn('❌ ID de pago inválido:', paymentIdRaw);
-      return res.status(200).end();
-    }
+  if (!paymentId || isNaN(paymentId)) {
+    console.warn('❌ ID de pago inválido:', paymentIdRaw);
+    return res.status(200).end();
+  }
 
-    try {
-      console.log('📩 Webhook recibido:', JSON.stringify(body, null, 2));
+  try {
+    const token = body.live_mode === false
+      ? process.env.MP_ACCESS_TOKEN_SANDBOX
+      : process.env.MP_ACCESS_TOKEN_PROD;
 
-      const token = body.live_mode === false
-        ? process.env.MP_ACCESS_TOKEN_SANDBOX
-        : process.env.MP_ACCESS_TOKEN_PROD;
+    mercadopago.configure({ access_token: token });
 
-      mercadopago.configure({ access_token: token });
+    const payment = await mercadopago.payment.findById(paymentId);
 
-      const payment = await mercadopago.payment.findById(paymentId);
-      if (!payment?.body?.status) {
-        console.warn('❌ No se pudo obtener el estado del pago:', payment);
+    console.log('✅ Estado del pago:', payment.body.status);
+
+    if (payment.body.status === 'approved') {
+      const { nombre, email, tipo_compra: tipoCompra } = payment.body.metadata || {};
+
+      if (!nombre || !email || !tipoCompra) {
+        console.warn('❌ Metadata incompleta:', payment.body.metadata);
         return res.status(200).end();
       }
 
-      console.log('✅ Estado actual del pago:', payment.body.status);
+      const GMAIL_USER = process.env.GMAIL_USER;
+      const GMAIL_PASS = process.env.GMAIL_PASS;
 
-      if (payment.body.status === 'approved') {
-        const { nombre, email, tipo_compra: tipoCompra } = payment.body.metadata || {};
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: GMAIL_USER, pass: GMAIL_PASS },
+      });
 
-        if (!nombre || !email || !tipoCompra) {
-          console.warn('❌ Faltan datos en metadata:', payment.body.metadata);
-          return res.status(200).end();
+      const filesByTipo = {
+        solo: ['Mindset.pdf'],
+        bonus1: ['Mindset.pdf', 'Productividad Extrema.pdf', 'Metas Efectivas.pdf'],
+        bonus2: ['Mindset.pdf', 'Productividad Extrema.pdf'],
+        bonus3: ['Mindset.pdf', 'Metas Efectivas.pdf'],
+      };
+
+      const files = filesByTipo[tipoCompra] || [];
+
+      const attachments = files.map(filename => {
+        const filePath = path.join(__dirname, '../pdf', filename);
+        if (!fs.existsSync(filePath)) {
+          console.warn('❌ Archivo faltante:', filePath);
         }
-
-        const GMAIL_USER = process.env.GMAIL_USER;
-        const GMAIL_PASS = process.env.GMAIL_PASS;
-
-        const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: GMAIL_USER,
-            pass: GMAIL_PASS,
-          },
-        });
-
-        const filesByTipo = {
-          solo: ['Mindset.pdf'],
-          bonus1: ['Mindset.pdf', 'Productividad Extrema.pdf', 'Metas Efectivas.pdf'],
-          bonus2: ['Mindset.pdf', 'Productividad Extrema.pdf'],
-          bonus3: ['Mindset.pdf', 'Metas Efectivas.pdf'],
+        return {
+          filename,
+          content: fs.readFileSync(filePath),
         };
+      });
 
-        const filenames = filesByTipo[tipoCompra] || [];
-        const attachments = [];
+      await transporter.sendMail({
+        from: `"Mentalidad" <${GMAIL_USER}>`,
+        to: email,
+        subject: '📘 Tu compra del libro Mentalidad',
+        text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés tu ebook.\n\n¡Disfrutalo!`,
+        attachments,
+      });
 
-        for (const filename of filenames) {
-          const filePath = path.join(__dirname, '../pdf', filename);
-          if (fs.existsSync(filePath)) {
-            attachments.push({
-              filename,
-              content: fs.readFileSync(filePath),
-            });
-          } else {
-            console.warn(`⚠️ Archivo no encontrado: ${filePath}`);
-          }
-        }
-
-        if (attachments.length === 0) {
-          console.warn('❌ No se adjuntaron archivos. Revisa los nombres y rutas.');
-          return res.status(200).end();
-        }
-
-        await transporter.sendMail({
-          from: `"Mentalidad" <${GMAIL_USER}>`,
-          to: email,
-          subject: '📘 Tu compra del libro Mentalidad',
-          text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés tu ebook.\n\n¡Disfrutalo!`,
-          attachments,
-        });
-
-        console.log(`✅ Correo enviado a ${email} con: ${attachments.map(a => a.filename).join(', ')}`);
-      } else {
-        console.log('⏳ Pago aún no aprobado:', payment.body.status);
-      }
-
-      res.status(200).end();
-    } catch (err) {
-      console.error('❌ Error en webhook:', err);
-      res.status(500).end();
+      console.log(`✅ Enviado a ${email}:`, files.join(', '));
     }
-  });
+
+    res.status(200).end();
+  } catch (err) {
+    console.error('❌ Error al procesar el webhook:', err);
+    res.status(500).end();
+  }
 };
