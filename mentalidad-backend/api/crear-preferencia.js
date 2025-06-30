@@ -17,8 +17,8 @@ export default async function handler(req, res) {
   const preciosARS = {
     solo: { title: 'Mindset (solo)', price: 1 },
     bonus1: { title: 'Bonus #1 - Mindset + Productividad + Metas Efectivas', price: 1 },
-    bonus2: { title: 'Bonus #2 - Mindset + Productividad', price: 1 },
-    bonus3: { title: 'Bonus #3 - Mindset + Metas Efectivas', price: 1 },
+    bonus2: { title: 'Bonus #2 - Productividad', price: 1 },
+    bonus3: { title: 'Bonus #3 - Metas Efectivas', price: 1 },
   };
 
   const item = preciosARS[tipoCompra];

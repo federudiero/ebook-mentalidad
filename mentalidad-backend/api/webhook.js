@@ -72,20 +72,14 @@ module.exports = async function handler(req, res) {
           }
         ],
         bonus2: [
-          {
-            nombre: 'Mentalidad',
-            link: 'https://drive.google.com/uc?export=download&id=1Irc0OhGMd4grhYA2PFAC71QlYFrm8y0p'
-          },
+         
           {
             nombre: 'Productividad Extrema',
             link: 'https://drive.google.com/uc?export=download&id=1GwiTx-wGoDIhhFhTntDD6QGAKneQWRm-'
           }
         ],
         bonus3: [
-          {
-            nombre: 'Mentalidad',
-            link: 'https://drive.google.com/uc?export=download&id=1Irc0OhGMd4grhYA2PFAC71QlYFrm8y0p'
-          },
+          
           {
             nombre: 'Metas Efectivas',
             link: 'https://drive.google.com/uc?export=download&id=1OGy7vKi_nigfHMXT7u5uvOYvfYtSxI-z'
