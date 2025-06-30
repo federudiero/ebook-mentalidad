@@ -8,7 +8,7 @@ module.exports = async function handler(req, res) {
 
   const { body } = req;
   const paymentIdRaw = body?.data?.id;
-  const paymentId = Number(paymentIdRaw);
+  const paymentId = parseInt(paymentIdRaw, 10); // ✅ más tolerante
 
   if (!paymentId || isNaN(paymentId)) {
     console.warn('❌ ID de pago inválido:', paymentIdRaw);
@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
 
     const payment = await mercadopago.payment.findById(paymentId);
     if (!payment?.body?.status) {
-      console.warn('❌ No se pudo obtener el pago:', payment);
+      console.warn('❌ No se pudo obtener el estado del pago:', payment);
       return res.status(200).end();
     }
 
@@ -34,6 +34,7 @@ module.exports = async function handler(req, res) {
 
     if (payment.body.status === 'approved') {
       const { nombre, email, tipo_compra: tipoCompra } = payment.body.metadata || {};
+
       if (!nombre || !email || !tipoCompra) {
         console.warn('❌ Faltan datos en metadata:', payment.body.metadata);
         return res.status(200).end();
@@ -73,7 +74,7 @@ module.exports = async function handler(req, res) {
       }
 
       if (attachments.length === 0) {
-        console.warn('❌ No se adjuntaron archivos para el envío');
+        console.warn('❌ No se adjuntaron archivos. Revisa los nombres y rutas.');
         return res.status(200).end();
       }
 
