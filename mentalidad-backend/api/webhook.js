@@ -7,8 +7,6 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { body } = req;
-
-  // Validación básica
   const paymentId = body?.data?.id;
   if (!paymentId || isNaN(paymentId)) {
     console.warn('❌ ID de pago inválido');
@@ -24,12 +22,11 @@ module.exports = async function handler(req, res) {
 
     mercadopago.configure({ access_token: token });
 
-    // Siempre consultamos el estado actual del pago
     const payment = await mercadopago.payment.findById(paymentId);
     console.log('✅ Estado actual del pago:', payment.body.status);
 
     if (payment.body.status === 'approved') {
-      const { nombre, email, tipoCompra } = payment.body.metadata || {};
+      const { nombre, email, tipo_compra: tipoCompra } = payment.body.metadata || {};
       if (!email || !nombre || !tipoCompra) {
         console.warn('❌ Faltan datos en metadata:', payment.body.metadata);
         return res.status(200).end();
