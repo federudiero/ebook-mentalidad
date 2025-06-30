@@ -2,13 +2,14 @@ const mercadopago = require('mercadopago');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
+const archiver = require('archiver');
+const os = require('os');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end('Method Not Allowed');
 
   let body = req.body;
 
-  // Backup manual por si req.body viene vacío (caso de Vercel)
   if (!body || !body.data) {
     try {
       const rawBody = await new Promise((resolve, reject) => {
@@ -41,7 +42,6 @@ module.exports = async function handler(req, res) {
     mercadopago.configure({ access_token: token });
 
     const payment = await mercadopago.payment.findById(paymentId);
-
     console.log('✅ Estado del pago:', payment.body.status);
 
     if (payment.body.status === 'approved') {
@@ -52,14 +52,6 @@ module.exports = async function handler(req, res) {
         return res.status(200).end();
       }
 
-      const GMAIL_USER = process.env.GMAIL_USER;
-      const GMAIL_PASS = process.env.GMAIL_PASS;
-
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: { user: GMAIL_USER, pass: GMAIL_PASS },
-      });
-
       const filesByTipo = {
         solo: ['Mindset.pdf'],
         bonus1: ['Mindset.pdf', 'Productividad Extrema.pdf', 'Metas Efectivas.pdf'],
@@ -69,26 +61,52 @@ module.exports = async function handler(req, res) {
 
       const files = filesByTipo[tipoCompra] || [];
 
-      const attachments = files.map(filename => {
-        const filePath = path.join(__dirname, '../pdf', filename);
-        if (!fs.existsSync(filePath)) {
-          console.warn('❌ Archivo faltante:', filePath);
+      // Crear ZIP temporal
+      const zipPath = path.join(os.tmpdir(), `mentalidad-${tipoCompra}-${Date.now()}.zip`);
+      await new Promise((resolve, reject) => {
+        const output = fs.createWriteStream(zipPath);
+        const archive = archiver('zip', { zlib: { level: 9 } });
+
+        output.on('close', resolve);
+        archive.on('error', reject);
+
+        archive.pipe(output);
+
+        for (const file of files) {
+          const filePath = path.join(__dirname, '../pdf', file);
+          if (fs.existsSync(filePath)) {
+            archive.file(filePath, { name: file });
+          } else {
+            console.warn(`⚠️ Archivo no encontrado: ${filePath}`);
+          }
         }
-        return {
-          filename,
-          content: fs.readFileSync(filePath),
-        };
+
+        archive.finalize();
+      });
+
+      // Enviar mail con ZIP
+      const GMAIL_USER = process.env.GMAIL_USER;
+      const GMAIL_PASS = process.env.GMAIL_PASS;
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: GMAIL_USER, pass: GMAIL_PASS },
       });
 
       await transporter.sendMail({
         from: `"Mentalidad" <${GMAIL_USER}>`,
         to: email,
         subject: '📘 Tu compra del libro Mentalidad',
-        text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés tu ebook.\n\n¡Disfrutalo!`,
-        attachments,
+        text: `Hola ${nombre},\n\nGracias por tu compra. Te enviamos tu ebook en un archivo comprimido adjunto.\n\n¡Disfrutalo!`,
+        attachments: [
+          {
+            filename: 'Tu-Pack-Mentalidad.zip',
+            content: fs.readFileSync(zipPath),
+          },
+        ],
       });
 
-      console.log(`✅ Enviado a ${email}:`, files.join(', '));
+      console.log(`✅ ZIP enviado a ${email}`);
     }
 
     res.status(200).end();
