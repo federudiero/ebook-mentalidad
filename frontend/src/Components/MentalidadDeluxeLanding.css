@@ -46,3 +46,28 @@
   background-color: #ffc107;
   border-radius: 50%;
 }
+
+@media (max-width: 768px) {
+  .modal-compra-ajustada .modal-dialog {
+    margin: 1rem auto !important;
+    max-width: 95%;
+  }
+
+  .modal-compra-ajustada .modal-content {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .modal-compra-ajustada .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-compra-ajustada .modal-header,
+  .modal-compra-ajustada .modal-footer {
+    padding: 1rem;
+  }
+
+  body.modal-open {
+    overflow-y: hidden;
+  }
+}
