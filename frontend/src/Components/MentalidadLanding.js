@@ -870,46 +870,43 @@ const MySwal = withReactContent(Swal);
 
 
    <Modal
-      show={showTipoCompra}
-      onHide={() => setShowTipoCompra(false)}
-      centered
-      scrollable
-      dialogClassName="modal-compra-ajustada"
-    >
-      <Modal.Header closeButton className="bg-dark text-white">
-        <Modal.Title>🛒 Elegí tu opción de compra</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="bg-light">
-        <Row className="g-3">
-          {[
-            { value: 'solo', label: '📘 Solo el libro', precio: 'USD 12' },
-            { value: 'bonus1', label: '📚 Mindset + Productividad + Metas', desc: 'Mindset + Productividad + Metas', precio: 'USD 18' },
-            { value: 'bonus2', label: '🚀 Productividad', desc: 'Productividad', precio: 'USD 8' },
-            { value: 'bonus3', label: '🎯 Metas Efectivas', desc: 'Metas Efectivas', precio: 'USD 8' }
-          ].map(({ value, label, desc, precio }) => (
-            <Col xs={12} key={value}>
-              <div
-                onClick={() => setTipoCompra(value)}
-                className={`border rounded-4 p-3 shadow-sm d-flex align-items-center justify-content-between cursor-pointer ${
-                  tipoCompra === value ? 'border-success bg-success bg-opacity-25' : 'bg-white'
-                }`}
-                style={{ transition: 'all 0.3s', cursor: 'pointer' }}
-              >
-                <div>
-                  <div className="fw-bold">{label}</div>
-                  {desc && <div className="small text-muted">{desc}</div>}
-                </div>
-                <div className="fw-semibold">{precio}</div>
-              </div>
-            </Col>
-          ))}
-        </Row>
-      </Modal.Body>
-      <Modal.Footer className="bg-light">
-        <Button variant="secondary" onClick={() => setShowTipoCompra(false)}>Cancelar</Button>
-        <Button variant="success" onClick={confirmarCompra} disabled={!tipoCompra}>Confirmar compra</Button>
-      </Modal.Footer>
-    </Modal>
+  show={showTipoCompra}
+  onHide={() => setShowTipoCompra(false)}
+  centered
+  scrollable
+  dialogClassName="modal-compra-ajustada"
+>
+  <Modal.Header closeButton className="bg-dark text-white">
+    <Modal.Title>🛒 Elegí tu opción de compra</Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body className="bg-light" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+    <Row className="g-3">
+      {[ /* tus opciones */ ].map(({ value, label, desc, precio }) => (
+        <Col xs={12} key={value}>
+          <div
+            onClick={() => setTipoCompra(value)}
+            className={`border rounded-4 p-3 shadow-sm d-flex align-items-center justify-content-between cursor-pointer ${
+              tipoCompra === value ? 'border-success bg-success bg-opacity-25' : 'bg-white'
+            }`}
+            style={{ transition: 'all 0.3s', cursor: 'pointer' }}
+          >
+            <div>
+              <div className="fw-bold">{label}</div>
+              {desc && <div className="small text-muted">{desc}</div>}
+            </div>
+            <div className="fw-semibold">{precio}</div>
+          </div>
+        </Col>
+      ))}
+    </Row>
+  </Modal.Body>
+
+  <Modal.Footer className="bg-light">
+    <Button variant="secondary" onClick={() => setShowTipoCompra(false)}>Cancelar</Button>
+    <Button variant="success" onClick={confirmarCompra} disabled={!tipoCompra}>Confirmar compra</Button>
+  </Modal.Footer>
+</Modal>
 
 
 
