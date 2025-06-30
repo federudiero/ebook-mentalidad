@@ -4,9 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './MentalidadDeluxeLanding.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
-
+import { Typewriter } from 'react-simple-typewriter';
 import { motion } from 'framer-motion';
+
+
+
 
 
 
@@ -131,37 +133,67 @@ const MySwal = withReactContent(Swal);
   </Container>
 </Navbar>
 
-      <div
-  className="text-white bg-dark text-center"
-  style={{
-    paddingTop: '160px',
-    paddingBottom: '80px',
-  }}
->
-  <Container>
-    <h1 className="display-3 fw-bold mb-4">
-      🔥 ¿Y si el verdadero bloqueo en tu vida no está fuera… sino en tu cabeza?
-    </h1>
-    <p className="lead mb-3">
-      Un entrenamiento que cambia tu manera de pensar, actuar y vivir.
-    </p>
-    <p className="lead mb-4">
-      Vivís estancado, sabés que tenés potencial, pero no entendés por qué seguís repitiendo los mismos resultados una y otra vez…
-    </p>
-    <Button variant="warning" size="lg" href="#comprar" className="px-5 py-3 fw-semibold shadow-sm rounded-pill">
-      Quiero mi copia
-    </Button>
+      
+    <div
+      className="text-white bg-dark text-center"
+      style={{ paddingTop: '160px', paddingBottom: '80px' }}
+    >
+      <Container>
+        <h1 className="display-3 fw-bold mb-4 position-relative" style={{ minHeight: '140px' }}>
+          🔥{' '}
+          <span style={{ color: 'white', position: 'relative', zIndex: 2 }}>
+            <Typewriter
+              words={[
+                '¿Y si el verdadero bloqueo en tu vida no está fuera… sino en tu cabeza?',
+              ]}
+              loop={1}
+              typeSpeed={40}
+              deleteSpeed={0}
+              delaySpeed={1500}
+            />
+          </span>
+          <span
+            className="position-absolute"
+            style={{
+              visibility: 'hidden',
+              whiteSpace: 'nowrap',
+              pointerEvents: 'none',
+            }}
+          >
+            ¿Y si el verdadero bloqueo en tu vida no está fuera… sino en tu cabeza?
+          </span>
+        </h1>
 
-    <div className="d-flex justify-content-center mt-5">
-      <img
-        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
-        alt="Ilustración del libro"
-        className="img-fluid rounded-4 shadow-lg"
-        style={{ maxWidth: '320px' }}
-      />
+        <p className="lead mb-3">
+          Un entrenamiento que cambia tu manera de pensar, actuar y vivir.
+        </p>
+        <p className="lead mb-4">
+          Vivís estancado, sabés que tenés potencial, pero no entendés por qué
+          seguís repitiendo los mismos resultados una y otra vez…
+        </p>
+
+        <Button
+          variant="warning"
+          size="lg"
+          href="#comprar"
+          className="px-5 py-3 fw-semibold shadow-sm rounded-pill"
+        >
+          Quiero mi copia
+        </Button>
+
+        <div className="d-flex justify-content-center mt-5">
+          <motion.img
+            initial={{ rotateY: 90, opacity: 0 }}
+            animate={{ rotateY: 0, opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
+            alt="Ilustración del libro"
+            className="img-fluid rounded-4 shadow-lg"
+            style={{ maxWidth: '320px' }}
+          />
+        </div>
+      </Container>
     </div>
-  </Container>
-</div>
 
 
      <section id="beneficios" className="py-5 bg-warning text-dark">
@@ -573,46 +605,45 @@ const MySwal = withReactContent(Swal);
 <section className="py-5 bg-dark text-center text-white">
   <Container>
     <h2 className="fw-bold display-5 mb-5">🧠 Entrenamientos que cambian tu mentalidad</h2>
-    <div className="position-relative d-flex justify-content-center align-items-center" style={{ height: '420px' }}>
-      {/* Productividad Extrema - fondo izquierdo */}
+
+    {/* Contenedor responsive */}
+    <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 position-relative" style={{ minHeight: '420px' }}>
+      
+      {/* Productividad Extrema */}
       <img
         src="https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg"
         alt="Productividad Extrema"
-        className="book-image position-absolute"
+        className="book-image"
         style={{
           width: '200px',
-          left: '10%',
-          top: '50%',
-          transform: 'translateY(-50%) rotate(-6deg)',
-          opacity: 0.7,
+          transform: 'rotate(-6deg)',
+          opacity: 0.8,
           zIndex: 1
         }}
       />
 
-      {/* Metas Efectivas - fondo derecho */}
-      <img
-        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg"
-        alt="Metas Efectivas"
-        className="book-image position-absolute"
-        style={{
-          width: '200px',
-          right: '10%',
-          top: '50%',
-          transform: 'translateY(-50%) rotate(6deg)',
-          opacity: 0.7,
-          zIndex: 1
-        }}
-      />
-
-      {/* Mindset - central */}
+      {/* Mindset */}
       <img
         src="https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg"
         alt="Mindset"
         className="book-image shadow-lg"
         style={{
-          width: '260px',
+          width: '240px',
           zIndex: 2,
           transform: 'scale(1.05)'
+        }}
+      />
+
+      {/* Metas Efectivas */}
+      <img
+        src="https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg"
+        alt="Metas Efectivas"
+        className="book-image"
+        style={{
+          width: '200px',
+          transform: 'rotate(6deg)',
+          opacity: 0.8,
+          zIndex: 1
         }}
       />
     </div>
@@ -626,8 +657,6 @@ const MySwal = withReactContent(Swal);
     </Button>
   </Container>
 </section>
-
-
 
 <section className="py-5 bg-light text-dark">
   <Container>
