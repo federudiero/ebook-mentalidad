@@ -1,14 +1,9 @@
 const mercadopago = require('mercadopago');
 const nodemailer = require('nodemailer');
-const fs = require('fs');
-const path = require('path');
-const archiver = require('archiver');
-const os = require('os');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end('Method Not Allowed');
 
-  // ✅ Captura manual del body para Vercel
   let body;
   try {
     const rawBody = await new Promise((resolve, reject) => {
@@ -19,14 +14,19 @@ module.exports = async function handler(req, res) {
     });
 
     body = JSON.parse(rawBody);
+    console.log('📦 Webhook recibido:', JSON.stringify(body, null, 2));
   } catch (err) {
-    console.error('❌ Error al obtener o parsear el body:', err);
+    console.error('❌ Error al parsear body:', err);
     return res.status(400).end('Invalid body');
   }
 
   const paymentIdRaw = body?.data?.id;
-  const paymentId = parseInt(paymentIdRaw, 10);
+  if (!paymentIdRaw) {
+    console.warn('❌ No se encontró data.id');
+    return res.status(200).end();
+  }
 
+  const paymentId = parseInt(paymentIdRaw, 10);
   if (!paymentId || isNaN(paymentId)) {
     console.warn('❌ ID de pago inválido:', paymentIdRaw);
     return res.status(200).end();
@@ -46,41 +46,59 @@ module.exports = async function handler(req, res) {
       const { nombre, email, tipo_compra: tipoCompra } = payment.body.metadata || {};
 
       if (!nombre || !email || !tipoCompra) {
-        console.warn('❌ Metadata incompleta:', payment.body.metadata);
+        console.warn('❌ Metadata incompleta');
         return res.status(200).end();
       }
 
-      const filesByTipo = {
-        solo: ['Mindset.pdf'],
-        bonus1: ['Mindset.pdf', 'Productividad Extrema.pdf', 'Metas Efectivas.pdf'],
-        bonus2: ['Mindset.pdf', 'Productividad Extrema.pdf'],
-        bonus3: ['Mindset.pdf', 'Metas Efectivas.pdf'],
+      const linksByTipo = {
+        solo: [
+          {
+            nombre: 'Mentalidad',
+            link: 'https://drive.google.com/uc?export=download&id=1Irc0OhGMd4grhYA2PFAC71QlYFrm8y0p'
+          }
+        ],
+        bonus1: [
+          {
+            nombre: 'Mentalidad',
+            link: 'https://drive.google.com/uc?export=download&id=1Irc0OhGMd4grhYA2PFAC71QlYFrm8y0p'
+          },
+          {
+            nombre: 'Productividad Extrema',
+            link: 'https://drive.google.com/uc?export=download&id=1GwiTx-wGoDIhhFhTntDD6QGAKneQWRm-'
+          },
+          {
+            nombre: 'Metas Efectivas',
+            link: 'https://drive.google.com/uc?export=download&id=1OGy7vKi_nigfHMXT7u5uvOYvfYtSxI-z'
+          }
+        ],
+        bonus2: [
+          {
+            nombre: 'Mentalidad',
+            link: 'https://drive.google.com/uc?export=download&id=1Irc0OhGMd4grhYA2PFAC71QlYFrm8y0p'
+          },
+          {
+            nombre: 'Productividad Extrema',
+            link: 'https://drive.google.com/uc?export=download&id=1GwiTx-wGoDIhhFhTntDD6QGAKneQWRm-'
+          }
+        ],
+        bonus3: [
+          {
+            nombre: 'Mentalidad',
+            link: 'https://drive.google.com/uc?export=download&id=1Irc0OhGMd4grhYA2PFAC71QlYFrm8y0p'
+          },
+          {
+            nombre: 'Metas Efectivas',
+            link: 'https://drive.google.com/uc?export=download&id=1OGy7vKi_nigfHMXT7u5uvOYvfYtSxI-z'
+          }
+        ],
       };
 
-      const files = filesByTipo[tipoCompra] || [];
+      const pack = linksByTipo[tipoCompra];
+      if (!pack) return res.status(400).end('Tipo de compra inválido');
 
-      // Crear ZIP temporal
-      const zipPath = path.join(os.tmpdir(), `mentalidad-${tipoCompra}-${Date.now()}.zip`);
-      await new Promise((resolve, reject) => {
-        const output = fs.createWriteStream(zipPath);
-        const archive = archiver('zip', { zlib: { level: 9 } });
-
-        output.on('close', resolve);
-        archive.on('error', reject);
-
-        archive.pipe(output);
-
-        for (const file of files) {
-          const filePath = path.join(__dirname, '../pdf', file);
-          if (fs.existsSync(filePath)) {
-            archive.file(filePath, { name: file });
-          } else {
-            console.warn(`⚠️ Archivo no encontrado: ${filePath}`);
-          }
-        }
-
-        archive.finalize();
-      });
+      const listaLinks = pack
+        .map(doc => `📘 ${doc.nombre}: ${doc.link}`)
+        .join('\n');
 
       const GMAIL_USER = process.env.GMAIL_USER;
       const GMAIL_PASS = process.env.GMAIL_PASS;
@@ -93,17 +111,11 @@ module.exports = async function handler(req, res) {
       await transporter.sendMail({
         from: `"Mentalidad" <${GMAIL_USER}>`,
         to: email,
-        subject: '📘 Tu compra del libro Mentalidad',
-        text: `Hola ${nombre},\n\nGracias por tu compra. Te enviamos tu ebook en un archivo comprimido adjunto.\n\n¡Disfrutalo!`,
-        attachments: [
-          {
-            filename: 'Tu-Pack-Mentalidad.zip',
-            content: fs.readFileSync(zipPath),
-          },
-        ],
+        subject: '📘 Tu pack del libro Mentalidad',
+        text: `Hola ${nombre},\n\nGracias por tu compra. Acá tenés los enlaces para descargar tus libros:\n\n${listaLinks}\n\n⚠️ Estos enlaces son exclusivos para vos. No los compartas.\n\n¡Disfrutalos!`,
       });
 
-      console.log(`✅ ZIP enviado a ${email}`);
+      console.log(`✅ Enlaces enviados a ${email}`);
     }
 
     res.status(200).end();
