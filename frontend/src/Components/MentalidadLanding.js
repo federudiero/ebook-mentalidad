@@ -878,8 +878,8 @@ const MySwal = withReactContent(Swal);
       {[
         { value: 'solo', label: '📘 Solo el libro', precio: 'USD 12' },
         { value: 'bonus1', label: '📚 Mindset + Productividad + Metas', desc: 'Mindset + Productividad + Metas', precio: 'USD 18' },
-        { value: 'bonus2', label: '🚀 Productividad', desc: 'Mindset + Productividad', precio: 'USD 8' },
-        { value: 'bonus3', label: '🎯 Metas Efectivas', desc: 'Mindset + Metas Efectivas', precio: 'USD 8' }
+        { value: 'bonus2', label: '🚀 Productividad', desc: 'Productividad', precio: 'USD 8' },
+        { value: 'bonus3', label: '🎯 Metas Efectivas', desc: 'Metas Efectivas', precio: 'USD 8' }
       ].map(({ value, label, desc, precio }) => (
         <Col xs={12} key={value}>
           <div
