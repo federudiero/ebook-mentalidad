@@ -36,7 +36,7 @@ export default async function handler(req, res) {
   const archivos = filesByTipo[tipoCompra] || [];
   const attachments = archivos.map(file => ({
     filename: file,
-    content: readFileSync(path.join(__dirname, '..', file)),
+    content: readFileSync(path.join(__dirname, '../pdf', file)),
   }));
 
   const mailOptions = {
