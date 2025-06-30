@@ -733,191 +733,143 @@ const MySwal = withReactContent(Swal);
   </Container>
 </section>
 
-
-<section id="comprar" className="py-5 bg-warning text-dark">
-  <Container className="my-5 py-5" style={{ maxWidth: '1000px' }}>
-    <h2 className="text-center fw-bold mb-4 display-5">¿Estás listo para cambiar tu mentalidad?</h2>
-    <p className="lead text-center mb-5">
-      Este no es solo un libro. Es una nueva forma de vivir. Da el primer paso ahora.
-    </p>
-
-    {/* PACKS VISUALES */}
-    <Row className="mb-5 g-4">
-      {[
-        {
-          nombre: 'Mentalidad + Metas Efectivas + Productividad',
-          precio: '18 USD',
-          incluye: ['Mentalidad', 'Productividad', 'Metas Efectivas'],
-          imagenes: [
-            'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg',
-            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg',
-            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg',
-          ]
-        },
-        {
-          nombre: 'Mentalidad Solo',
-          precio: '12 USD',
-          incluye: ['Mentalidad'],
-          imagenes: [
-            'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg'
-          ]
-        },
-        {
-          nombre: 'Productividad',
-          precio: '8 USD',
-          incluye: ['Productividad'],
-          imagenes: [
-            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg'
-          ]
-        },
-        {
-          nombre: 'Metas Efectivas',
-          precio: '8 USD',
-          incluye: ['Metas Efectivas'],
-          imagenes: [
-            'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg',
-            'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg'
-          ]
-        }
-      ].map((pack, idx) => (
-        <Col xs={12} md={6} key={idx}>
-          <div
-            className="rounded-4 p-4 h-100 text-center border border-dark-subtle bg-white"
-            style={{
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              cursor: 'pointer',
-              boxShadow: '0 6px 20px rgba(0,0,0,0.08)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.03)';
-              e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.15)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)';
-            }}
-          >
-            <h5 className="fw-bold mb-3">{pack.nombre}</h5>
-            <div className="d-flex justify-content-center flex-wrap gap-2 mb-3">
-              {pack.imagenes.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt={`Libro ${i}`}
-                  className="rounded-3 shadow-sm"
-                  style={{ width: '90px', height: 'auto', objectFit: 'cover' }}
-                />
-              ))}
-            </div>
-            <p className="mb-2"><strong>Incluye:</strong> {pack.incluye.join(' + ')}</p>
-            <p className="fw-semibold fs-5">{pack.precio}</p>
-          </div>
-        </Col>
-      ))}
-    </Row>
-
-    {/* FORMULARIO */}
-    <h5 className="text-center mb-4">Completá tus datos para elegir tu bonus y comenzar tu compra</h5>
-
-    <Form className="mb-4">
-      <Form.Group className="mb-3">
-        <Form.Label>Tu nombre</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Escribí tu nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          disabled={loading}
-        />
-      </Form.Group>
-      <Form.Group className="mb-4">
-        <Form.Label>Tu correo electrónico</Form.Label>
-        <Form.Control
-          type="email"
-          placeholder="tucorreo@ejemplo.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-        />
-      </Form.Group>
-    </Form>
-
-    <div className="d-flex justify-content-center gap-3 flex-wrap">
-      <Button
-        variant="dark"
-        size="lg"
-        onClick={handleCompra}
-        disabled={loading}
-        className="px-5 py-3 fw-bold rounded-pill"
-      >
-        {loading ? 'Procesando...' : 'Comprar ahora'}
-      </Button>
-    </div>
-  </Container>
-
-  {/* WhatsApp button */}
-  <a href="https://wa.me/543518120950" className="position-fixed bottom-0 end-0 m-4" style={{ zIndex: 9999 }} target="_blank" rel="noopener noreferrer">
-    <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp" width="60" height="60" style={{ borderRadius: '50%' }} />
-  </a>
-
-  {/* Modal de capítulos (si lo usás) */}
-  <Modal show={show} onHide={cerrarModal} centered>
-    <Modal.Header closeButton>
-      <Modal.Title>{contenidoModal.titulo}</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <p>{contenidoModal.texto}</p>
-    </Modal.Body>
-  </Modal>
-
-  {/* Modal de compra */}
-  <Modal
-    show={showTipoCompra}
-    onHide={() => setShowTipoCompra(false)}
-    centered
-    scrollable
-    dialogClassName="modal-compra-ajustada"
-  >
-    <Modal.Header closeButton className="bg-dark text-white">
-      <Modal.Title>🛒 Elegí tu opción de compra</Modal.Title>
-    </Modal.Header>
-
-    <Modal.Body className="bg-light" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-      <Row className="g-3">
-        {[
-          { value: 'solo', label: '📘 Solo el libro', precio: 'USD 12' },
-          { value: 'bonus1', label: '📚 Mindset + Productividad + Metas', desc: 'Mindset + Productividad + Metas', precio: 'USD 18' },
-          { value: 'bonus2', label: '🚀 Productividad', desc: 'Productividad', precio: 'USD 8' },
-          { value: 'bonus3', label: '🎯 Metas Efectivas', desc: 'Metas Efectivas', precio: 'USD 8' }
-        ].map(({ value, label, desc, precio }) => (
-          <Col xs={12} key={value}>
-            <div
-              onClick={() => setTipoCompra(value)}
-              className={`border rounded-4 p-3 shadow-sm d-flex align-items-center justify-content-between cursor-pointer ${
-                tipoCompra === value ? 'border-success bg-success bg-opacity-25' : 'bg-white'
-              }`}
-              style={{ transition: 'all 0.3s' }}
-            >
-              <div>
-                <div className="fw-bold">{label}</div>
-                {desc && <div className="small text-muted">{desc}</div>}
+ <section id="comprar" className="py-5 bg-warning text-dark">
+      <Container className="my-5 py-5" style={{ maxWidth: '1000px' }}>
+        <h2 className="text-center fw-bold mb-4 display-5">¿Estás listo para cambiar tu mentalidad?</h2>
+        <p className="lead text-center mb-5">Este no es solo un libro. Es una nueva forma de vivir. Da el primer paso ahora.</p>
+        <p className="lead text-center mb-5">Seleciona el pack que quieres !!!</p>
+        <Row className="mb-5 g-4">
+          {[
+            {
+              nombre: 'Mentalidad + Metas Efectivas + Productividad',
+              precio: '18 USD',
+              incluye: ['Mentalidad', 'Productividad', 'Metas Efectivas'],
+              value: 'bonus1',
+              imagenes: [
+                'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg',
+                'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg',
+                'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg'
+              ]
+            },
+            {
+              nombre: 'Mentalidad Solo',
+              precio: '12 USD',
+              incluye: ['Mentalidad'],
+              value: 'solo',
+              imagenes: [
+                'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg'
+              ]
+            },
+            {
+              nombre: 'Productividad',
+              precio: '8 USD',
+              incluye: ['Productividad'],
+              value: 'bonus2',
+              imagenes: [
+                'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.22.10_wxcqgo.jpg'
+              ]
+            },
+            {
+              nombre: 'Metas Efectivas',
+              precio: '8 USD',
+              incluye: ['Metas Efectivas'],
+              value: 'bonus3',
+              imagenes: [
+                'https://res.cloudinary.com/doxadkm4r/image/upload/v1745949187/ebook/Imagen_de_WhatsApp_2025-04-26_a_las_21.42.07_4cd72e1c_spp4vt.jpg',
+                'https://res.cloudinary.com/doxadkm4r/image/upload/v1750881368/ebook/WhatsApp_Image_2025-06-21_at_13.09.56_qkjyzx.jpg'
+              ]
+            }
+          ].map((pack, idx) => (
+            <Col xs={12} md={6} key={idx}>
+              <div
+                className={`rounded-4 p-4 h-100 text-center border ${
+                  tipoCompra === pack.value ? 'border-success bg-success bg-opacity-25' : 'border-dark-subtle bg-white'
+                }`}
+                style={{
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.08)'
+                }}
+                onClick={() => setTipoCompra(pack.value)}
+              >
+                <h5 className="fw-bold mb-3">{pack.nombre}</h5>
+                <div className="d-flex justify-content-center flex-wrap gap-2 mb-3">
+                  {pack.imagenes.map((img, i) => (
+                    <img
+                      key={i}
+                      src={img}
+                      alt={`Libro ${i}`}
+                      className="rounded-3 shadow-sm"
+                      style={{ width: '90px', height: 'auto', objectFit: 'cover' }}
+                    />
+                  ))}
+                </div>
+                <p className="mb-2"><strong>Incluye:</strong> {pack.incluye.join(' + ')}</p>
+                <p className="fw-semibold fs-5">{pack.precio}</p>
               </div>
-              <div className="fw-semibold">{precio}</div>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </Modal.Body>
+            </Col>
+          ))}
+        </Row>
 
-    <Modal.Footer className="bg-light">
-      <Button variant="secondary" onClick={() => setShowTipoCompra(false)}>Cancelar</Button>
-      <Button variant="success" onClick={confirmarCompra} disabled={!tipoCompra}>Confirmar compra</Button>
-    </Modal.Footer>
-  </Modal>
-</section>
+        <h5 className="text-center mb-4">Completá tus datos para elegir tu bonus y comenzar tu compra</h5>
 
+        <Form className="mb-4">
+          <Form.Group className="mb-3">
+            <Form.Label>Tu nombre</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Escribí tu nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              disabled={loading}
+            />
+          </Form.Group>
+          <Form.Group className="mb-4">
+            <Form.Label>Tu correo electrónico</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="tucorreo@ejemplo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+            />
+          </Form.Group>
+        </Form>
 
-
+        <div className="d-flex justify-content-center gap-3 flex-wrap">
+          <Button
+            variant="dark"
+            size="lg"
+            onClick={handleCompra}
+            disabled={loading}
+            className="px-5 py-3 fw-bold rounded-pill"
+          >
+            {loading ? 'Procesando...' : 'Comprar ahora'}
+          </Button>
+        </div>
+      </Container>
+    </section>
+<Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>Confirmar Compra</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <p className="mb-3">¿Confirmás tu compra del pack seleccionado?</p>
+    <ul>
+      <li><strong>Nombre:</strong> {nombre}</li>
+      <li><strong>Email:</strong> {email}</li>
+      <li><strong>Pack:</strong> {tipoCompra}</li>
+    </ul>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowTipoCompra(false)}>
+      Cancelar
+    </Button>
+    <Button variant="dark" onClick={confirmarCompra} disabled={loading}>
+      {loading ? 'Procesando...' : 'Confirmar y pagar'}
+    </Button>
+  </Modal.Footer>
+</Modal>
 
     </>
   );
