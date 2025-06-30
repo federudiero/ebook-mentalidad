@@ -47,3 +47,9 @@
   border-radius: 50%;
 }
 
+@media (max-width: 767px) {
+  .grid-section2 {
+    display: flex !important;
+    flex-direction: column;
+  }
+}

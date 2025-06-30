@@ -674,7 +674,7 @@ const handleCompra = async (e) => {
     <h2 className="text-center fw-bold mb-5 display-5">📚 Más entrenamientos que transforman</h2>
 
     <div
-      className="grid-section"
+      className="grid-section2"
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -704,7 +704,20 @@ const handleCompra = async (e) => {
             <li>✅ Compromiso real</li>
             <li>✅ Foco con propósito</li>
           </ul>
-          <Button variant="warning" className="fw-bold rounded-pill px-4">Ver opciones</Button>
+          <Button
+            variant="warning"
+            className="fw-bold rounded-pill px-4"
+            onClick={() =>
+              Swal.fire({
+                title: '📘 Metas Efectivas',
+                html: 'Aprendé a diseñar objetivos que realmente cumplas. Aplicá el método SMARTER y desarrollá foco, compromiso y seguimiento.',
+                icon: 'info',
+                confirmButtonText: 'Cerrar',
+              })
+            }
+          >
+            Ver opciones
+          </Button>
         </div>
       </motion.div>
 
@@ -731,7 +744,20 @@ const handleCompra = async (e) => {
             <li>✅ Diseñar días de alto impacto</li>
             <li>✅ Energía y enfoque</li>
           </ul>
-          <Button variant="warning" className="fw-bold rounded-pill px-4">Ver opciones</Button>
+          <Button
+            variant="warning"
+            className="fw-bold rounded-pill px-4"
+            onClick={() =>
+              Swal.fire({
+                title: '📘 Productividad Extrema',
+                html: 'Descubrí cómo maximizar tu tiempo y energía. Eliminá distracciones, diseñá días productivos y lográ más sin estrés.',
+                icon: 'info',
+                confirmButtonText: 'Cerrar',
+              })
+            }
+          >
+            Ver opciones
+          </Button>
         </div>
       </motion.div>
     </div>
@@ -743,6 +769,7 @@ const handleCompra = async (e) => {
     </div>
   </Container>
 </section>
+
 
  <section id="comprar" className="py-5 bg-warning text-dark">
       <Container className="my-5 py-5" style={{ maxWidth: '1000px' }}>
