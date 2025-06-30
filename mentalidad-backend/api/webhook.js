@@ -7,9 +7,11 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { body } = req;
-  const paymentId = body?.data?.id;
+  const paymentIdRaw = body?.data?.id;
+  const paymentId = Number(paymentIdRaw);
+
   if (!paymentId || isNaN(paymentId)) {
-    console.warn('❌ ID de pago inválido');
+    console.warn('❌ ID de pago inválido:', paymentIdRaw);
     return res.status(200).end();
   }
 
@@ -23,11 +25,16 @@ module.exports = async function handler(req, res) {
     mercadopago.configure({ access_token: token });
 
     const payment = await mercadopago.payment.findById(paymentId);
+    if (!payment?.body?.status) {
+      console.warn('❌ No se pudo obtener el pago:', payment);
+      return res.status(200).end();
+    }
+
     console.log('✅ Estado actual del pago:', payment.body.status);
 
     if (payment.body.status === 'approved') {
       const { nombre, email, tipo_compra: tipoCompra } = payment.body.metadata || {};
-      if (!email || !nombre || !tipoCompra) {
+      if (!nombre || !email || !tipoCompra) {
         console.warn('❌ Faltan datos en metadata:', payment.body.metadata);
         return res.status(200).end();
       }
@@ -50,10 +57,25 @@ module.exports = async function handler(req, res) {
         bonus3: ['Mindset.pdf', 'Metas Efectivas.pdf'],
       };
 
-      const attachments = (filesByTipo[tipoCompra] || []).map(filename => ({
-        filename,
-        content: fs.readFileSync(path.join(__dirname, filename)), // ruta base del backend
-      }));
+      const filenames = filesByTipo[tipoCompra] || [];
+      const attachments = [];
+
+      for (const filename of filenames) {
+        const filePath = path.join(__dirname, '../pdf', filename);
+        if (fs.existsSync(filePath)) {
+          attachments.push({
+            filename,
+            content: fs.readFileSync(filePath),
+          });
+        } else {
+          console.warn(`⚠️ Archivo no encontrado: ${filePath}`);
+        }
+      }
+
+      if (attachments.length === 0) {
+        console.warn('❌ No se adjuntaron archivos para el envío');
+        return res.status(200).end();
+      }
 
       await transporter.sendMail({
         from: `"Mentalidad" <${GMAIL_USER}>`,
