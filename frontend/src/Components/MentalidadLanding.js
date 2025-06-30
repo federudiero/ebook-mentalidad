@@ -32,36 +32,47 @@ export default function MentalidadLanding() {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showTipoCompra, setShowTipoCompra] = useState(false);
+ 
 const [tipoCompra, setTipoCompra] = useState('');
 
   const abrirModal = (titulo, texto) => setContenidoModal({ titulo, texto }) || setShow(true);
-  const cerrarModal = () => setShow(false);
+
 
 
   const isEmailValid = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const MySwal = withReactContent(Swal);
 
-
- const handleCompra = (e) => {
+const handleCompra = async (e) => {
   e.preventDefault();
   if (!nombre || !email) {
-    MySwal.fire({
+    await MySwal.fire({
       icon: 'warning',
       title: 'Faltan datos',
       text: 'Completá tu nombre y tu email antes de continuar.',
     });
     return;
   }
+
   if (!isEmailValid(email)) {
-    MySwal.fire({
+    await MySwal.fire({
       icon: 'error',
       title: 'Email inválido',
       text: 'Ingresá un correo electrónico válido.',
     });
     return;
   }
-  setShowTipoCompra(true);
+
+  if (!tipoCompra) {
+    await MySwal.fire({
+      icon: 'warning',
+      title: 'Elegí una opción de compra',
+      text: 'Seleccioná una opción antes de continuar.',
+    });
+    return;
+  }
+
+  // 🚀 Redirige directamente sin modal
+  confirmarCompra();
 };
 
  const confirmarCompra = async () => {
@@ -75,7 +86,7 @@ const MySwal = withReactContent(Swal);
   }
 
   setLoading(true);
-  setShowTipoCompra(false);
+  
 
   try {
     const res = await fetch('https://ebook-mentalidad.vercel.app/api/crear-preferencia', {
@@ -849,27 +860,7 @@ const MySwal = withReactContent(Swal);
         </div>
       </Container>
     </section>
-<Modal show={showTipoCompra} onHide={() => setShowTipoCompra(false)} centered>
-  <Modal.Header closeButton>
-    <Modal.Title>Confirmar Compra</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <p className="mb-3">¿Confirmás tu compra del pack seleccionado?</p>
-    <ul>
-      <li><strong>Nombre:</strong> {nombre}</li>
-      <li><strong>Email:</strong> {email}</li>
-      <li><strong>Pack:</strong> {tipoCompra}</li>
-    </ul>
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={() => setShowTipoCompra(false)}>
-      Cancelar
-    </Button>
-    <Button variant="dark" onClick={confirmarCompra} disabled={loading}>
-      {loading ? 'Procesando...' : 'Confirmar y pagar'}
-    </Button>
-  </Modal.Footer>
-</Modal>
+
 
     </>
   );
