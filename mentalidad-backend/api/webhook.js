@@ -8,8 +8,7 @@ module.exports = async function handler(req, res) {
 
   const { body } = req;
 
-  if (body.type !== 'payment') return res.status(200).end();
-
+  // Validación básica
   const paymentId = body?.data?.id;
   if (!paymentId || isNaN(paymentId)) {
     console.warn('❌ ID de pago inválido');
@@ -25,8 +24,9 @@ module.exports = async function handler(req, res) {
 
     mercadopago.configure({ access_token: token });
 
+    // Siempre consultamos el estado actual del pago
     const payment = await mercadopago.payment.findById(paymentId);
-    console.log('✅ Detalles del pago:', payment.body);
+    console.log('✅ Estado actual del pago:', payment.body.status);
 
     if (payment.body.status === 'approved') {
       const { nombre, email, tipoCompra } = payment.body.metadata || {};
@@ -37,6 +37,7 @@ module.exports = async function handler(req, res) {
 
       const GMAIL_USER = process.env.GMAIL_USER;
       const GMAIL_PASS = process.env.GMAIL_PASS;
+
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -54,7 +55,7 @@ module.exports = async function handler(req, res) {
 
       const attachments = (filesByTipo[tipoCompra] || []).map(filename => ({
         filename,
-        content: fs.readFileSync(path.join(__dirname, filename)), // ✅ corregido
+        content: fs.readFileSync(path.join(__dirname, filename)), // ruta base del backend
       }));
 
       await transporter.sendMail({
@@ -65,7 +66,9 @@ module.exports = async function handler(req, res) {
         attachments,
       });
 
-      console.log(`✅ Correo enviado a ${email} con archivos: ${attachments.map(a => a.filename).join(', ')}`);
+      console.log(`✅ Correo enviado a ${email} con: ${attachments.map(a => a.filename).join(', ')}`);
+    } else {
+      console.log('⏳ Pago aún no aprobado:', payment.body.status);
     }
 
     res.status(200).end();
